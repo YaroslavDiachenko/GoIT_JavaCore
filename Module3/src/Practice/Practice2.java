@@ -3,7 +3,6 @@
 Перевернуть массив (отзеркалить массив) и вывести его в консоль
  */
 
-import java.util.Scanner;
 
 public class Practice2 {
 

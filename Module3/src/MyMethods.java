@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
-class MyMethods {
+public class MyMethods {
 
-    static int[] initializeArray() {
+    public static int[] initializeArray() {
 
         // 1. Input string (list of numbers)
         Scanner sc = new Scanner(System.in);
@@ -21,7 +21,7 @@ class MyMethods {
         return array;
     }
 
-    static void reverseArray(int[] array) {
+    public static void reverseArray(int[] array) {
         for (int i = 0; i < array.length/2; i++) {
             int temp = array[i];
             array[i] = array[array.length-1-i];
@@ -29,7 +29,7 @@ class MyMethods {
         }
     }
 
-    static void printArray(int[] array) {
+    public static void printArray(int[] array) {
         System.out.print("\nOutput result: ");
         for (int i = 0; i < array.length; i++) {
             System.out.print(i == array.length-1 ? array[i]+"\n" : array[i]+", ");
