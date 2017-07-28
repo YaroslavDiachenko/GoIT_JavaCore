@@ -27,8 +27,8 @@ Google в помощь.
  */
 
 public class Point {
-    double x;
-    double y;
+    public double x;
+    public double y;
     static final Point ZERO = new Point(0,0);
 
     public Point(double x, double y) {
@@ -36,22 +36,30 @@ public class Point {
         this.y = y;
     }
 
-    double calcLength(Point otherPoint) {
+    public double calcLength(Point otherPoint) {
         return Math.sqrt(Math.pow((this.y - otherPoint.y),2) + Math.pow((this.x - otherPoint.x),2));
     }
 
-    double calcLength() {
+    public double calcLength() {
         return calcLength(ZERO);
     }
 
-    void normalize() {
+    public Point normalize() {
         double length = calcLength();
         this.x /= length;
         this.y /= length;
+        return new Point(this.x,this.y);
     }
 
-    public static void main(String[] args) {
-        Point example = new Point(3,2);
+    public Point minus(Point a) {
+        return new Point(this.x - a.x,this.y - a.y);
+    }
 
+    public Point plus(Point a) {
+        return new Point(this.x + a.x,this.y + a.y);
+    }
+
+    public Point multiply(double n) {
+        return new Point(this.x * n,this.y * n);
     }
 }

@@ -7,8 +7,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-
-import java.awt.*;
 import java.util.Random;
 
 public class Task2 extends Application {
@@ -22,7 +20,6 @@ public class Task2 extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
@@ -47,5 +44,4 @@ public class Task2 extends Application {
         }
         return circles;
     }
-
 }
