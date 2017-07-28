@@ -23,11 +23,10 @@
 package HomeWork.Task1;
 
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 
-public class Circles {
+public class Snowman {
 
     Circle[] circles;
 
@@ -39,10 +38,12 @@ public class Circles {
         return Color.color(Math.random(),Math.random(),Math.random());
     }
 
-    void paintAll() {
+    void paintAll(Color color) {
         if (this.circles == null) return;
-        for (int i = 0; i < this.circles.length; i++)
-            if (i == 0) this.circles[i].setFill(Color.RED);
+        for (int i = 0; i < this.circles.length; i++) {
+            this.circles[i].setFill(color);
+            this.circles[i].setStroke(color);
+        }
     }
 
     Circle[] drawSnowman(int count, double min, double max) {
