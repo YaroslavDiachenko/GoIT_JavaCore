@@ -1,4 +1,3 @@
-
 /*
 Задание 1
 Создать оконное приложение на JavaFX
@@ -21,38 +20,69 @@
 быть светло серым.
  */
 
-package HomeWork;
+package HomeWork.Task1;
 
-        import javafx.scene.paint.Color;
-        import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 
-public class Task1 {
 
-    static double randomDouble(double min,double max) {
+public class Circles {
+
+    Circle[] circles;
+
+    double randomDouble(double min,double max) {
         return Math.round(Math.random() * (max - min) + min);
     }
 
-    static Color randomColor() {
+    Color randomColor() {
         return Color.color(Math.random(),Math.random(),Math.random());
     }
 
-    static Circle[] drawSnowman(int count) {
+    void paintAll() {
+        if (this.circles == null) return;
+        for (int i = 0; i < this.circles.length; i++)
+            if (i == 0) this.circles[i].setFill(Color.RED);
+    }
 
-        Circle[] circles = new Circle[count];
+    Circle[] drawSnowman(int count, double min, double max) {
+
+        this.circles = new Circle[count+3];
         for (int i = 0; i < circles.length; i++) {
-            if (i == 0) {
-                circles[i] = new Circle(200, 500, randomDouble(20,50),randomColor());
 
-            } else {
-                circles[i] = new Circle(randomDouble(20,50));
+            if (i == 0) { // bottom circle;
+                circles[i] = new Circle(200, 500, randomDouble(min,max),randomColor());
+
+            } else if (i == circles.length - 3) { // nose;
+                circles[i] = new Circle(
+                        circles[circles.length-4].getCenterX(),
+                        circles[circles.length-4].getCenterY(),
+                        randomDouble(circles[circles.length-4].getRadius()/8,circles[circles.length-4].getRadius()/4),
+                        randomColor());
+
+            } else if (i == circles.length - 2) { // left eye;
+                circles[i] = new Circle(
+                        circles[circles.length-4].getCenterX() - circles[circles.length-4].getRadius()/2,
+                        circles[circles.length-4].getCenterY() - circles[circles.length-4].getRadius()/2,
+                        randomDouble(circles[circles.length-4].getRadius()/8,circles[circles.length-4].getRadius()/4),
+                        randomColor());
+
+            } else if (i == circles.length - 1) { // right eye;
+                circles[i] = new Circle(
+                        circles[circles.length-4].getCenterX() + circles[circles.length-4].getRadius()/2,
+                        circles[circles.length-4].getCenterY() - circles[circles.length-4].getRadius()/2,
+                        randomDouble(circles[circles.length-4].getRadius()/8,circles[circles.length-4].getRadius()/4),
+                        randomColor());
+
+            }else { // other body circles;
+                circles[i] = new Circle(randomDouble(min,max));
                 circles[i].setCenterX(200);
-                circles[i].setCenterY(circles[i-1].getCenterY() - (circles[i-1].getRadius() + circles[i].getRadius() + 5));
+                circles[i].setCenterY(circles[i-1].getCenterY() - (circles[i-1].getRadius() + circles[i].getRadius() + 3));
             }
             circles[i].setFill(Color.WHITE);
             circles[i].setStroke(randomColor());
-            circles[i].setStrokeWidth(5);
+            circles[i].setStrokeWidth(3);
         }
         return circles;
     }
 }
-
