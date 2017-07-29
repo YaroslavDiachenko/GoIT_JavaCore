@@ -22,6 +22,7 @@
 
 package HomeWork.Task1;
 
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -40,9 +41,11 @@ public class Snowman {
 
     void paintAll(Color color) {
         if (this.circles == null) return;
+        double saturation = color.getSaturation();
         for (int i = 0; i < this.circles.length; i++) {
-            this.circles[i].setFill(color);
-            this.circles[i].setStroke(color);
+            this.circles[i].setFill(Color.hsb(color.getHue(), saturation,color.getBrightness()));
+            this.circles[i].setStroke(Color.hsb(color.getHue(), saturation,color.getBrightness()));
+            saturation -= color.getSaturation()/this.circles.length;
         }
     }
 
@@ -52,7 +55,7 @@ public class Snowman {
         for (int i = 0; i < circles.length; i++) {
 
             if (i == 0) { // bottom circle;
-                circles[i] = new Circle(200, 500, randomDouble(min,max),randomColor());
+                circles[i] = new Circle(300, 600, randomDouble(min,max),randomColor());
 
             } else if (i == circles.length - 3) { // nose;
                 circles[i] = new Circle(
@@ -77,7 +80,7 @@ public class Snowman {
 
             }else { // other body circles;
                 circles[i] = new Circle(randomDouble(min,max));
-                circles[i].setCenterX(200);
+                circles[i].setCenterX(300);
                 circles[i].setCenterY(circles[i-1].getCenterY() - (circles[i-1].getRadius() + circles[i].getRadius() + 3));
             }
             circles[i].setFill(Color.WHITE);
