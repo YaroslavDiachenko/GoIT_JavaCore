@@ -22,24 +22,116 @@
 
 package HomeWork.Task1;
 
-import javafx.scene.effect.ColorAdjust;
+import javafx.event.ActionEvent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+public class SnowmanScene {
 
-public class Snowman {
+    private Circle[] circles;
+    private Pane root = new Pane();
 
-    Circle[] circles;
+    public SnowmanScene(Stage primaryStage) {
+        graphicInterface();
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+    }
 
-    double randomDouble(double min,double max) {
+    void graphicInterface() {
+
+        Button button1 = new Button("Draw snowman");
+        Button button2 = new Button("Paint gradient");
+
+        TextField field1 = new TextField();
+        TextField field2 = new TextField();
+        TextField field3 = new TextField();
+        TextField field4 = new TextField ();
+
+        Text message1 = new Text();
+        Text message2 = new Text();
+
+        button1.setTranslateX(180);
+        button1.setTranslateY(10);
+
+        button2.setTranslateX(180);
+        button2.setTranslateY(110);
+
+        field1.setPromptText("Number of circles");
+        field1.setTranslateX(10);
+        field1.setTranslateY(10);
+
+        field2.setPromptText("Minimum random radius");
+        field2.setTranslateX(10);
+        field2.setTranslateY(40);
+
+        field3.setPromptText("Maximum random radius");
+        field3.setTranslateX(10);
+        field3.setTranslateY(70);
+
+        field4.setPromptText("Color");
+        field4.setTranslateX(10);
+        field4.setTranslateY(110);
+
+        message1.setFont(Font.font ("Times New Roman", 16));
+        message1.setX(12);
+        message1.setY(165);
+
+        message2.setFont(Font.font ("Times New Roman", 16));
+        message2.setX(12);
+        message2.setY(185);
+
+        root.getChildren().addAll(button1,button2,field1,field2,field3,field4,message1,message2);
+
+        button1.setOnAction((ActionEvent e) -> {
+            clearCircles();
+            message1.setText("");
+            message2.setText("");
+            if (field1.getText().isEmpty() || field2.getText().isEmpty() || field3.getText().isEmpty())
+                message1.setText("Input all data");
+            else {
+                try {
+                    int n1 = Integer.parseInt(field1.getText());
+                    double n2 = Double.parseDouble(field2.getText());
+                    double n3 = Double.parseDouble(field3.getText());
+                    root.getChildren().addAll(drawSnowman(n1,n2,n3));
+                    message1.setText("Snowman with " + n1 + " circles, minimum radius " + n2 + " and maximum radius " + n3 + ".");
+                }catch (NumberFormatException e2){
+                    message1.setText("Incorrect format");
+                }
+            }
+        });
+
+        button2.setOnAction((ActionEvent e) -> {
+            if (circles == null) message2.setText("Draw snowman first!");
+            else if (!field4.getText().isEmpty()) {
+                String s4 = field4.getText();
+
+                try{
+                    paintAll(Color.valueOf(s4.toUpperCase()));
+                    message2.setText("Painted with " + s4 + " gradient.");
+                }catch(IllegalArgumentException e3) {
+                    message2.setText("Unknown color");
+                }
+            }
+        });
+    }
+
+    private double randomDouble(double min,double max) {
         return Math.round(Math.random() * (max - min) + min);
     }
 
-    Color randomColor() {
+    private Color randomColor() {
         return Color.color(Math.random(),Math.random(),Math.random());
     }
 
-    void paintAll(Color color) {
+    private void paintAll(Color color) {
         if (this.circles == null) return;
         double saturation = color.getSaturation();
         for (int i = 0; i < this.circles.length; i++) {
@@ -49,9 +141,10 @@ public class Snowman {
         }
     }
 
-    Circle[] drawSnowman(int count, double min, double max) {
+    private Circle[] drawSnowman(int count, double min, double max) {
 
-        this.circles = new Circle[count+3];
+        clearCircles();
+        circles = new Circle[count+3];
         for (int i = 0; i < circles.length; i++) {
 
             if (i == 0) { // bottom circle;
@@ -88,5 +181,11 @@ public class Snowman {
             circles[i].setStrokeWidth(3);
         }
         return circles;
+    }
+
+    private void clearCircles() {
+        if (circles != null && circles.length > 0) {
+            root.getChildren().removeAll(circles);
+        }
     }
 }
