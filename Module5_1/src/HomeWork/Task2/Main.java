@@ -1,25 +1,21 @@
 package HomeWork.Task2;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Main extends Application{
+
+    public static final float WIDTH = 500;
+    public static final float HEIGHT = 500;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        primaryStage.setWidth(WIDTH);
+        primaryStage.setHeight(HEIGHT);
+        PentagramScene pentagramScene = new PentagramScene(primaryStage);
+    }
 
-        // new object:
-        Pentagram pentagram = new Pentagram();
-
-        // app main block:
-        primaryStage.setWidth(600);
-        primaryStage.setHeight(700);
-        Pane root = new Pane();
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        root.getChildren().addAll(pentagram.drawPentagram(100,100,50));
-
+    public static void main(String[] args) {
+        launch(args);
     }
 }

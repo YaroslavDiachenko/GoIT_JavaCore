@@ -40,7 +40,7 @@
 
 package PackageCar;
 
-import static java.util.Arrays.fill;
+import static java.util.Arrays.copyOf;
 
 public class Car {
 
@@ -48,10 +48,10 @@ public class Car {
 
     private final int productionDate;
     private String engineType;
-    private double maxSpeed;
-    private double time100kmReach;
+    private double maxSpeedNewCar;
+    private double accelerationTime100kmph;
     private int passengersCapacity;
-    private int passengers;
+    private int passengersQuantity;
     private double currentSpeed;
     private CarWheel[] wheels;
     private CarDoor[] doors;
@@ -61,68 +61,69 @@ public class Car {
     public Car(int productionDate) {
         this.productionDate = productionDate;
     }
-    public Car(int productionDate, String engineType, double maxSpeed, double time100kmReach, int passengersCapacity, int passengers, double currentSpeed) {
+    public Car(int productionDate, String engineType, double maxSpeed, double accelerationTime100kmph, int passengersCapacity, int passengersQuantity, double currentSpeed) {
         this.productionDate = productionDate;
         this.engineType = engineType;
-        this.maxSpeed = maxSpeed;
-        this.time100kmReach = time100kmReach;
+        this.maxSpeedNewCar = maxSpeed;
+        this.accelerationTime100kmph = accelerationTime100kmph;
         this.passengersCapacity = passengersCapacity;
-        this.passengers = passengers;
+        this.passengersQuantity = passengersQuantity;
         this.currentSpeed = currentSpeed;
+    }
+
+    // Getters:
+
+    public CarWheel[] getWheels() {
+        return wheels;
+    }
+    CarDoor getDoor(int index) {
+        return doors[index];
+    }
+    CarWheel getWheel(int index) {
+        return wheels[index];
     }
 
     // Methods:
 
-    void changeCurrentSpeed(int currentSpeed) {
+    void changeCurrentSpeed(double currentSpeed) {
         this.currentSpeed = currentSpeed;
     }
     void addPassenger() {
-        passengers++;
+        passengersQuantity++;
     }
     void removePassenger() {
-        passengers--;
+        passengersQuantity--;
     }
     void removeAllPassengers() {
-        passengers = 0;
-    }
-    CarDoor getDoor(int n) {
-        return doors[n];
-    }
-    CarWheel getWheel(int n) {
-        return wheels[n];
+        passengersQuantity = 0;
     }
     void removeAllWheels() {
-        fill(wheels, null);
+        wheels = null;
     }
-    void addNewWheels(int n) {
-        for (int i = 0; i < wheels.length; i++) {
-            if (wheels[i] == null) {
-                for (int j = i; j < i + n; j++) {
-                    wheels[j] = new CarWheel();
-                }
-                break;
-            }
+    void addNewWheels(int x) {
+        if(wheels == null) wheels = new CarWheel[x];
+        else {
+            CarWheel[] temp = copyOf(wheels, wheels.length + x);
+            wheels = temp;
         }
     }
-
-    double getCurrentMaxSpeed() {
-        if (passengers > 1) {
-            double min = wheels[0].getTireWear();
-            for (int i = 0; i < wheels.length; i++) {
-                if (wheels[0].getTireWear() < min) min = wheels[0].getTireWear();
+    double getMaxSpeedUsedCar() {
+        if (passengersQuantity > 0) {
+            double min = 1;
+            for(CarWheel i : wheels) {
+                if(i != null && i.getTireWear() < min) min = i.getTireWear();
             }
-            return maxSpeed * min;
+            return maxSpeedNewCar * min;
         }else
             return 0.0;
     }
-
-    void printObject() {
+    void printCar() {
         System.out.println("Production date: " + productionDate);
-        System.out.println("Maximum speed : " + maxSpeed);
-        System.out.println("Acceleration till 100km per hour: " + time100kmReach);
+        System.out.println("Maximum speed of a new car: " + maxSpeedNewCar);
+        System.out.println("Acceleration time up to 100km per hour: " + accelerationTime100kmph);
         System.out.println("Passengers capacity: " + passengersCapacity);
-        System.out.println("Quantity of passengers" + passengers);
+        System.out.println("Quantity of passengers: " + passengersQuantity);
         System.out.println("Current speed: " + currentSpeed);
-        System.out.println(this.getCurrentMaxSpeed());
+        System.out.println("Current maximum speed of this car: " + getMaxSpeedUsedCar());
     }
 }

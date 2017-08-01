@@ -64,7 +64,7 @@ public class CarDoor {
         windowState = !windowState;
     }
 
-    void printObject() {
+    void printDoor() {
         System.out.println(doorState ? "Door is open" : "Door is closed");
         System.out.println(windowState ? "Window is open" : "Window is closed");
     }

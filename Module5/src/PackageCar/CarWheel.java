@@ -34,18 +34,21 @@ public class CarWheel {
         this.tireWear = tireWear;
     }
 
+    // Getters:
+
+    public double getTireWear() {
+        return tireWear;
+    }
+
     // Methods:
 
     void renewTire() {
         tireWear = 1.0;
     }
-    void wearTire(double tireWare) {
-        this.tireWear = tireWare;
+    void wearTire(double percentage) {
+        this.tireWear = this.tireWear - (this.tireWear * percentage / 100);
     }
-    public double getTireWear() {
-        return tireWear;
-    }
-    void printObject() {
-        System.out.println("Tire wear level is " + tireWear);
+    void printWheel() {
+        System.out.println("Wear level of the tire is (from 0 to 1) " + tireWear + ".");
     }
 }

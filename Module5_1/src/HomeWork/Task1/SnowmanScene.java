@@ -94,7 +94,7 @@ public class SnowmanScene {
             message1.setText("");
             message2.setText("");
             if (field1.getText().isEmpty() || field2.getText().isEmpty() || field3.getText().isEmpty())
-                message1.setText("Input all data");
+                message1.setText("Please input data to all fields!");
             else {
                 try {
                     int n1 = Integer.parseInt(field1.getText());
@@ -103,7 +103,7 @@ public class SnowmanScene {
                     root.getChildren().addAll(drawSnowman(n1,n2,n3));
                     message1.setText("Snowman with " + n1 + " circles, minimum radius " + n2 + " and maximum radius " + n3 + ".");
                 }catch (NumberFormatException e2){
-                    message1.setText("Incorrect format");
+                    message1.setText("Incorrect! Please input data in number format.");
                 }
             }
         });
@@ -121,6 +121,7 @@ public class SnowmanScene {
                 }
             }
         });
+
     }
 
     private double randomDouble(double min,double max) {

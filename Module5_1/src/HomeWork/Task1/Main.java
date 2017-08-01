@@ -5,7 +5,6 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
 
-
     public static final float WIDTH = 600;
     public static final float HEIGHT = 700;
 
