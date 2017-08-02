@@ -7,16 +7,19 @@ public class Main {
 
         Car car = new Car(20170101);
         car.addNewWheels(2);
-        showOptions();
-
 
         Scanner sc = new Scanner(System.in);
-        int option = sc.nextInt();
+        int option;
+        String repeat;
+
         do {
             showOptions();
+            option = sc.nextInt();
 
             switch (option)
             {
+                case 0:
+                    break;
                 case 1:
                     System.out.println("Enter speed value:");
                     car.changeCurrentSpeed(sc.nextDouble());
@@ -103,14 +106,17 @@ public class Main {
 
             }
 
-        } while (option == 0);
+            System.out.println("\nContinue? (Y/N)");
+            sc.nextLine();
+            repeat = sc.nextLine();
+        } while (repeat.equals("Y"));
 
     }
 
     static void showOptions() {
         System.out.println(
 
-                "Choose action:\n\n" +
+                "\nChoose action:\n\n" +
 
                 "1 - change current speed;\n" +
                 "2 - add a passenger;\n" +
