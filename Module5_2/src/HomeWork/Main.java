@@ -1,14 +1,23 @@
 package HomeWork;
 
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application{
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setWidth(400);
+        primaryStage.setHeight(400);
+
+        Pane root = new Pane();
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
     public static void main(String[] args) {
-        MP3player player1 = new Player1(10);
-        MP3player player2 = new Player2(20);
-
-        System.out.println(player1.getPrice());
-        System.out.println(player2.getPrice());
-
-
+        launch(args);
     }
 }
