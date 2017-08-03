@@ -103,6 +103,13 @@ public class Main {
                                     + car.getWheel(input).getTireWear() + ".");
                     }
                     break;
+                case 13:
+                    if (car.getDoors() == null) System.out.println("There are no doors on the car.");
+                    else {
+                        System.out.println("Enter wheel number:");
+                        int input = sc.nextInt();
+                        if (car.getWheel(input) == null) System.out.println("Missing wheel.");
+                        else car.getWheel(input).printWheel();
 
             }
 

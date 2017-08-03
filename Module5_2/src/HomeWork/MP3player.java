@@ -2,7 +2,7 @@ package HomeWork;
 
 import java.util.Random;
 
-class MP3player {
+abstract class MP3player {
 
     // class fields:
     private final double price;

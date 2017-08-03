@@ -76,6 +76,9 @@ public class Car {
     public CarWheel[] getWheels() {
         return wheels;
     }
+    public CarDoor[] getDoors() {
+        return doors;
+    }
     CarDoor getDoor(int index) {
         return doors[index];
     }
