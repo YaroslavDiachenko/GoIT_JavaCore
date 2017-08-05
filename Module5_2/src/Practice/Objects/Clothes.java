@@ -1,11 +1,14 @@
-package Practice;
+package Practice.Objects;
 
+import Practice.Features.Brand;
+import Practice.Goods;
 
-public class Clothes {
+public class Clothes extends Goods {
+    Brand brand = new Brand();
 
-
-    int brend_yearOfFoundation;
-    int brend_name;
-    int brend_quantityOfWorkers;
-    int brend_quantityOfDistributionCountries;
+    @Override
+    public void show() {
+        super.show();
+        System.out.println();
+    }
 }
