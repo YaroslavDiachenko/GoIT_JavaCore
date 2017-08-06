@@ -5,26 +5,27 @@ Lesson
 package HomeWork.Task2;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class PentagramScene {
+public class Pentagram {
 
     Line[] lines;
-    Pane root = new Pane();
+    Pane pentagramLayout = new Pane();
 
-
-    public PentagramScene(Stage primaryStage) {
+    public Pentagram() {
         graphicInterface();
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
     }
 
     private void graphicInterface() {
@@ -38,7 +39,6 @@ public class PentagramScene {
         TextField field4 = new TextField ();
 
         Text message1 = new Text();
-        Text message2 = new Text();
 
         button1.setTranslateX(180);
         button1.setTranslateY(10);
@@ -66,44 +66,37 @@ public class PentagramScene {
         message1.setX(12);
         message1.setY(165);
 
-        message2.setFont(Font.font ("Times New Roman", 16));
-        message2.setX(12);
-        message2.setY(185);
-
-        root.getChildren().addAll(button1,button2,field1,field2,field3,field4,message1,message2);
+        pentagramLayout.getChildren().addAll(button1,button2,field1,field2,field3,field4,message1);
 
         button1.setOnAction((ActionEvent e) -> {
             clearLines();
             message1.setText("");
-            message2.setText("");
             if (field1.getText().isEmpty() || field2.getText().isEmpty() || field3.getText().isEmpty())
-                message1.setText("Please input data to all fields!");
+                Pentagram.alert("Error", "Please input data to all fields!");
             else {
                 try {
                     double n1 = Double.parseDouble(field1.getText());
                     double n2 = Double.parseDouble(field2.getText());
                     double n3 = Double.parseDouble(field3.getText());
-                    root.getChildren().addAll(drawPentagram(n1,n2,n3));
+                    pentagramLayout.getChildren().addAll(drawPentagram(n1,n2,n3));
                     message1.setText("Pentagram with coordinates x: " + n1 + " , y: " + n2 + " and radius: " + n3 + ".");
                 }catch (NumberFormatException e2){
-                    message1.setText("Incorrect! Please input data in number format.");
+                    Pentagram.alert("Error", "Please input data in number format.");
                 }
             }
         });
 
         button2.setOnAction((ActionEvent e) -> {
-            if (lines == null) message2.setText("Draw snowman first!");
+            if (lines == null) Pentagram.alert("Error", "Draw pentagram first!");
             else if (!field4.getText().isEmpty()) {
                 String s4 = field4.getText();
-
                 try{
                     paintLines(Color.valueOf(s4.toUpperCase()));
                 }catch(IllegalArgumentException e3) {
-                    message2.setText("Unknown color");
+                    Pentagram.alert("Error", "Unknown color");
                 }
-            }
+            }else Pentagram.alert("Error", "Please input a color.");
         });
-
     }
 
     private Line[] drawPentagram(double x0, double y0, double radius) {
@@ -147,9 +140,30 @@ public class PentagramScene {
 
     private void clearLines() {
         if (lines != null && lines.length > 0) {
-            root.getChildren().removeAll(lines);
+            pentagramLayout.getChildren().removeAll(lines);
         }
     }
 
+    public static void alert(String title, String message) {
+        Stage stage = new Stage();
+
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle(title);
+        stage.setMinWidth(300);
+        stage.setMinHeight(100);
+
+        Label label = new Label();
+        label.setText(message);
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> stage.close());
+
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(label, closeButton);
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
 }
 
