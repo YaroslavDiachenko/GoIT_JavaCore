@@ -8,8 +8,10 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,6 +25,7 @@ public class Pentagram {
 
     Line[] lines;
     Pane pentagramLayout = new Pane();
+    boolean answer;
 
     public Pentagram() {
         graphicInterface();
@@ -32,15 +35,15 @@ public class Pentagram {
 
         Button button1 = new Button("Draw pentagram");
         Button button2 = new Button("Paint pentagram");
-
         TextField field1 = new TextField();
         TextField field2 = new TextField();
         TextField field3 = new TextField();
-        TextField field4 = new TextField ();
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        choiceBox.getItems().addAll("Red", "Orange", "Yellow", "Green", "LightBlue", "Blue", "Violet");
 
         Text message1 = new Text();
 
-        button1.setTranslateX(180);
+        button1.setTranslateX(190);
         button1.setTranslateY(10);
 
         button2.setTranslateX(180);
@@ -58,44 +61,42 @@ public class Pentagram {
         field3.setTranslateX(10);
         field3.setTranslateY(70);
 
-        field4.setPromptText("Color");
-        field4.setTranslateX(10);
-        field4.setTranslateY(110);
+        choiceBox.setTranslateX(10);
+        choiceBox.setTranslateY(110);
 
-        message1.setFont(Font.font ("Times New Roman", 16));
         message1.setX(12);
         message1.setY(165);
 
-        pentagramLayout.getChildren().addAll(button1,button2,field1,field2,field3,field4,message1);
+        pentagramLayout.getChildren().addAll(button1,button2,field1,field2,field3,choiceBox,message1);
 
         button1.setOnAction((ActionEvent e) -> {
-            clearLines();
-            message1.setText("");
             if (field1.getText().isEmpty() || field2.getText().isEmpty() || field3.getText().isEmpty())
-                Pentagram.alert("Error", "Please input data to all fields!");
+                alert("Error", "Please input data to all fields!");
             else {
                 try {
+                    clearLines();
+                    message1.setText(null);
                     double n1 = Double.parseDouble(field1.getText());
                     double n2 = Double.parseDouble(field2.getText());
                     double n3 = Double.parseDouble(field3.getText());
                     pentagramLayout.getChildren().addAll(drawPentagram(n1,n2,n3));
-                    message1.setText("Pentagram with coordinates x: " + n1 + " , y: " + n2 + " and radius: " + n3 + ".");
+                    message1.setText("Pentagram with coordinates x = " + n1 + " , y = " + n2 + ", radius = " + n3 + ".");
                 }catch (NumberFormatException e2){
-                    Pentagram.alert("Error", "Please input data in number format.");
+                    alert("Error", "Please input data in number format.");
                 }
             }
         });
 
-        button2.setOnAction((ActionEvent e) -> {
-            if (lines == null) Pentagram.alert("Error", "Draw pentagram first!");
-            else if (!field4.getText().isEmpty()) {
-                String s4 = field4.getText();
+        button2.setOnAction(e -> {
+            if (lines == null) alert("Error", "Draw pentagram first!");
+            else if (!choiceBox.getValue().isEmpty()) {
+                String s4 = choiceBox.getValue();
                 try{
-                    paintLines(Color.valueOf(s4.toUpperCase()));
+                    paintLines(Color.valueOf(s4));
                 }catch(IllegalArgumentException e3) {
-                    Pentagram.alert("Error", "Unknown color");
+                    alert("Error", "Unknown color");
                 }
-            }else Pentagram.alert("Error", "Please input a color.");
+            }else alert("Error", "Please input a color.");
         });
     }
 
@@ -144,7 +145,7 @@ public class Pentagram {
         }
     }
 
-    public static void alert(String title, String message) {
+    public void alert(String title, String message) {
         Stage stage = new Stage();
 
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -164,6 +165,44 @@ public class Pentagram {
         Scene scene = new Scene(layout);
         stage.setScene(scene);
         stage.showAndWait();
+    }
+
+    public boolean confirm(String title, String message) {
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle(title);
+        stage.setMinWidth(300);
+        stage.setMinHeight(100);
+        Label label = new Label();
+        label.setText(message);
+
+        Button yesButton = new Button("Yes");
+        Button noButton = new Button("No");
+        yesButton.setMinWidth(60);
+        noButton.setMinWidth(60);
+
+        yesButton.setOnAction(e -> {
+            answer = true;
+            stage.close();
+        });
+        noButton.setOnAction(e -> {
+            answer = false;
+            stage.close();
+        });
+
+        VBox layout = new VBox(10);
+        HBox layout2 = new HBox(7);
+
+        //Add buttons
+        layout2.getChildren().addAll(yesButton,noButton);
+        layout.getChildren().addAll(label, layout2);
+        layout.setAlignment(Pos.CENTER);
+        layout2.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(layout);
+        stage.setScene(scene);
+        stage.showAndWait();
+
+        return answer;
     }
 }
 
