@@ -88,14 +88,8 @@ public class Pentagram {
 
         button2.setOnAction(e -> {
             if (lines == null) alert("Error", "Draw pentagram first!");
-            else if (!choiceBox.getValue().isEmpty()) {
-                String s4 = choiceBox.getValue();
-                try{
-                    paintLines(Color.valueOf(s4));
-                }catch(IllegalArgumentException e3) {
-                    alert("Error", "Unknown color");
-                }
-            }else alert("Error", "Please input a color.");
+            else if (choiceBox.getValue() != null) paintLines(Color.valueOf(choiceBox.getValue()));
+            else alert("Error", "Please input a color.");
         });
     }
 
