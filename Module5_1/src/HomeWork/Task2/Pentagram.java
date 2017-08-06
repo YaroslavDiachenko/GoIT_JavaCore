@@ -5,15 +5,11 @@ Lesson
 package HomeWork.Task2;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -23,7 +19,9 @@ import javafx.stage.Stage;
 public class Pentagram {
 
     Line[] lines;
-    Pane pentagramLayout = new Pane();
+    VBox programLayout = new VBox(10);
+    Pane pentagramPicture = new Pane();
+
     boolean answer;
 
     public Pentagram() {
@@ -32,53 +30,57 @@ public class Pentagram {
 
     private void graphicInterface() {
 
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(20,10,10,20));
+        gridPane.setHgap(20);
+        gridPane.setVgap(5);
+        ColumnConstraints column1 = new ColumnConstraints();
+        ColumnConstraints column2 = new ColumnConstraints(150);
+        column2.setHgrow(Priority.ALWAYS);
+        gridPane.getColumnConstraints().addAll(column1, column2);
+
         Button button1 = new Button("Draw pentagram");
         Button button2 = new Button("Paint pentagram");
+        Label label1 = new Label("X coordinate:");
+        Label label2 = new Label("Y coordinate:");
+        Label label3 = new Label("Radius:");
+        Label label4 = new Label("Color:");
         TextField field1 = new TextField();
         TextField field2 = new TextField();
         TextField field3 = new TextField();
-        ChoiceBox<String> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().addAll("Red", "Orange", "Yellow", "Green", "LightBlue", "Blue", "Violet");
-
+        ComboBox<String> comboBox = new ComboBox<>();
         Text message1 = new Text();
+        message1.setTranslateX(20);
 
-        button1.setTranslateX(190);
-        button1.setTranslateY(10);
+        comboBox.getItems().addAll("Red", "Orange", "Yellow", "Green", "LightBlue", "Blue", "Violet");
+        comboBox.setEditable(true);
 
-        button2.setTranslateX(180);
-        button2.setTranslateY(110);
+        gridPane.add(label1,0,0);
+        gridPane.add(label2,0,1);
+        gridPane.add(label3,0,2);
+        gridPane.add(label4,0,3);
+        gridPane.add(field1,1,0);
+        gridPane.add(field2,1,1);
+        gridPane.add(field3,1,2);
+        gridPane.add(comboBox,1,3);
 
-        field1.setPromptText("X coordinate");
-        field1.setTranslateX(10);
-        field1.setTranslateY(10);
+        gridPane.add(button1,2,0);
+        gridPane.add(button2,2,3);
 
-        field2.setPromptText("Y coordinate");
-        field2.setTranslateX(10);
-        field2.setTranslateY(40);
 
-        field3.setPromptText("Radius");
-        field3.setTranslateX(10);
-        field3.setTranslateY(70);
-
-        choiceBox.setTranslateX(10);
-        choiceBox.setTranslateY(110);
-
-        message1.setX(12);
-        message1.setY(165);
-
-        pentagramLayout.getChildren().addAll(button1,button2,field1,field2,field3,choiceBox,message1);
+        programLayout.getChildren().addAll(gridPane,message1,pentagramPicture);
 
         button1.setOnAction((ActionEvent e) -> {
             if (field1.getText().isEmpty() || field2.getText().isEmpty() || field3.getText().isEmpty())
                 alert("Error", "Please input data to all fields!");
             else {
                 try {
-                    clearLines();
-                    message1.setText(null);
                     double n1 = Double.parseDouble(field1.getText());
                     double n2 = Double.parseDouble(field2.getText());
                     double n3 = Double.parseDouble(field3.getText());
-                    pentagramLayout.getChildren().addAll(drawPentagram(n1,n2,n3));
+                    clearLines();
+                    message1.setText(null);
+                    pentagramPicture.getChildren().addAll(drawPentagram(n1,n2,n3));
                     message1.setText("Pentagram with coordinates x = " + n1 + " , y = " + n2 + ", radius = " + n3 + ".");
                 }catch (NumberFormatException e2){
                     alert("Error", "Please input data in number format.");
@@ -88,8 +90,13 @@ public class Pentagram {
 
         button2.setOnAction(e -> {
             if (lines == null) alert("Error", "Draw pentagram first!");
-            else if (choiceBox.getValue() != null) paintLines(Color.valueOf(choiceBox.getValue()));
-            else alert("Error", "Please input a color.");
+            else if (comboBox.getValue() != null) {
+                try{
+                    paintLines(Color.valueOf(comboBox.getValue()));
+                }catch(IllegalArgumentException e3) {
+                    alert("Error", "Unknown color.");
+                }
+            }else alert("Error", "Please input a color.");
         });
     }
 
@@ -134,7 +141,7 @@ public class Pentagram {
 
     private void clearLines() {
         if (lines != null && lines.length > 0) {
-            pentagramLayout.getChildren().removeAll(lines);
+            pentagramPicture.getChildren().removeAll(lines);
         }
     }
 

@@ -7,11 +7,11 @@ import javafx.stage.Stage;
 public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setWidth(500);
+        primaryStage.setWidth(600);
         primaryStage.setHeight(500);
         primaryStage.setTitle("Pentagram");
         Pentagram pentagram = new Pentagram();
-        Scene scene = new Scene(pentagram.pentagramLayout);
+        Scene scene = new Scene(pentagram.programLayout);
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> {
