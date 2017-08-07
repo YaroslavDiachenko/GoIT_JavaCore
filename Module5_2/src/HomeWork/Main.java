@@ -17,8 +17,8 @@ public class Main extends Application{
         Player1 player1 = new Player1(10, "A song");
 
         Pane root = new Pane();
-//        player1.show(root);
-        Scene scene = new Scene(root,400,40, Color.LIGHTGRAY);
+        player1.show(root);
+        Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
