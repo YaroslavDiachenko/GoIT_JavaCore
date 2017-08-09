@@ -1,6 +1,7 @@
 package HomeWork;
 
 import HomeWork.MP3Player.OneSongPlayers.Player1;
+import HomeWork.MP3Player.OneSongPlayers.Player2;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -13,7 +14,8 @@ public class Main extends Application{
         primaryStage.setHeight(400);
         primaryStage.setTitle("MP3Player");
 
-        Player1 player1 = new Player1(10, "A song");
+        Player1 player1 = new Player1(19);
+        Player2 player2 = new Player2(10);
 
         Pane root = new Pane();
         player1.show(root);
