@@ -15,12 +15,13 @@ public class Company {
         this.staff = staff;
     }
 
-    double countMonthlyExpenses() {
+    void countAndShowGrossMonthlyExpenses() {
         double monthlyExpenses = 0;
         for (Employee i : staff) {
             monthlyExpenses += i.countSalary();
         }
-        return monthlyExpenses;
+        System.out.print("\nCompany's gross monthly expenses: ");
+        Company.customFormat(monthlyExpenses);
     }
 
     void showAllEmployees() {
