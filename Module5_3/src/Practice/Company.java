@@ -17,14 +17,14 @@ public class Company {
 
     double countMonthlyExpenses() {
         double monthlyExpenses = 0;
-        for(Employee i : staff) {
+        for (Employee i : staff) {
             monthlyExpenses += i.countSalary();
         }
         return monthlyExpenses;
     }
 
     void showAllEmployees() {
-        for(Employee i : staff) {
+        for (Employee i : staff) {
             i.showEmployee();
         }
     }
@@ -33,16 +33,16 @@ public class Company {
         try {
             FileWriter writer = new FileWriter(fileName);
             for (Employee i : staff) {
-                if(isFreelancer(i)) {
+                if (isFreelancer(i)) {
                     writer.write("Freelancer\n");
-                    writer.write("" + ((Freelancer)i).getDailyHours() + "\n");
-                    writer.write("" + ((Freelancer)i).getHourlyRate() + "\n");
-                }else if (isFixedPaid(i)){
+                    writer.write("" + ((Freelancer) i).getDailyHours() + "\n");
+                    writer.write("" + ((Freelancer) i).getHourlyRate() + "\n");
+                } else if (isFixedPaid(i)) {
                     writer.write("FixedPaid\n");
-                    writer.write("" + ((FixedPaid)i).getFixedMonthlyRate() + "\n");
-                }else {
+                    writer.write("" + ((FixedPaid) i).getFixedMonthlyRate() + "\n");
+                } else {
                     writer.write("HourPaid\n");
-                    writer.write("" + ((HourPaid)i).getHourlyRate() + "\n");
+                    writer.write("" + ((HourPaid) i).getHourlyRate() + "\n");
                 }
                 writer.write(i.name + "\n");
                 writer.write("" + i.surname + "\n\n");
@@ -54,13 +54,13 @@ public class Company {
         }
     }
 
-    static Company readFromFile(String fileName){
+    static Company readFromFile(String fileName) {
         ArrayList<Employee> staff = new ArrayList<>();
         try {
             FileReader reader = new FileReader(fileName);
             BufferedReader br = new BufferedReader(reader);
             String className = br.readLine();
-            while(className != null) {
+            while (className != null) {
                 switch (className) {
                     case "HourPaid":
                         staff.add(new HourPaid(
@@ -104,9 +104,38 @@ public class Company {
         return employee instanceof FixedPaid;
     }
 
-    static void customFormat(double value ) {
+    static void customFormat(double value) {
         DecimalFormat decimalFormat = new DecimalFormat("$###,###.###");
         String output = decimalFormat.format(value);
         System.out.println(output);
     }
+
+    public void sortEmployeesBySalaryAscending() {
+        int n = staff.length;
+        Employee temp;
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < (n - i); j++) {
+                if (staff[j - 1].countSalary() > staff[j].countSalary()) {
+                    temp = staff[j - 1];
+                    staff[j - 1] = staff[j];
+                    staff[j] = temp;
+                }
+            }
+        }
+    }
+
+    public void sortEmployeesBySalaryDescending() {
+        int n = staff.length;
+        Employee temp;
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < (n - i); j++) {
+                if (staff[j - 1].countSalary() < staff[j].countSalary()) {
+                    temp = staff[j - 1];
+                    staff[j - 1] = staff[j];
+                    staff[j] = temp;
+                }
+            }
+        }
+    }
+
 }
