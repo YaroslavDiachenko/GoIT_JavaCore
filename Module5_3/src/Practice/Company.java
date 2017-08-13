@@ -15,7 +15,7 @@ public class Company {
         this.staff = staff;
     }
 
-    void countAndShowGrossMonthlyExpenses() {
+    void countAndShowMonthlyExpenses() {
         double monthlyExpenses = 0;
         for (Employee i : staff) {
             monthlyExpenses += i.countSalary();

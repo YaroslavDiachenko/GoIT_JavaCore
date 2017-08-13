@@ -9,6 +9,6 @@ public class Main {
         Company company = Company.readFromFile(fileName);
         company.sortEmployeesBySalaryAscending();
         company.showAllEmployees();
-        company.countAndShowGrossMonthlyExpenses();
+        company.countAndShowMonthlyExpenses();
     }
 }
