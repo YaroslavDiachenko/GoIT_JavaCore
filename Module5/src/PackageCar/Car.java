@@ -80,10 +80,10 @@ public class Car {
         return doors;
     }
     CarDoor getDoor(int index) {
-        return doors[index];
+        return doors[index-1];
     }
     CarWheel getWheel(int index) {
-        return wheels[index];
+        return wheels[index-1];
     }
 
     // Methods:
@@ -104,10 +104,15 @@ public class Car {
         wheels = null;
     }
     void addNewWheels(int x) {
-        if(wheels == null) wheels = new CarWheel[x];
-        else {
+        if(wheels == null) {
+            wheels = new CarWheel[x];
+        }else {
             CarWheel[] temp = copyOf(wheels, wheels.length + x);
             wheels = temp;
+        }
+
+        for (int i = 0; i < wheels.length; i++) {
+            if (wheels[i] == null) wheels[i] = new CarWheel(0.8);
         }
     }
     double getMaxSpeedUsedCar() {
@@ -128,5 +133,26 @@ public class Car {
         System.out.println("Quantity of passengers: " + passengersQuantity);
         System.out.println("Current speed: " + currentSpeed);
         System.out.println("Current maximum speed of this car: " + getMaxSpeedUsedCar());
+    }
+    boolean validateWheel(int n) {
+        String message1 = "There are no wheels on the car.";
+        String message2 = "The wheel is missing.";
+        String message3 = "The wheel is present.";
+        if (wheels == null) System.out.println(message1);
+        else {
+            boolean a = false;
+            for (CarWheel i : wheels) {
+                if (i != null) a = true;
+            }
+            if (!a) System.out.println(message1);
+            else {
+                if (wheels[n - 1] == null) System.out.println(message2);
+                else {
+                    System.out.println(message3);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

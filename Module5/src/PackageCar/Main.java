@@ -6,11 +6,17 @@ public class Main {
     public static void main(String[] args) {
 
         Car car = new Car(20170101);
-        car.addNewWheels(2);
+        car.addNewWheels(4);
+        if (car.getWheels() == null) System.out.println("OOps");
+        System.out.println(car.getWheel(1).getTireWear());
+        System.out.println(car.getWheel(1).getTireWear());
+
+
+        car.validateWheel(1);
 
         Scanner sc = new Scanner(System.in);
         int option;
-        String repeat;
+        String repeat = "NO";
 
         do {
             showOptions();
@@ -110,6 +116,7 @@ public class Main {
                         int input = sc.nextInt();
                         if (car.getWheel(input) == null) System.out.println("Missing wheel.");
                         else car.getWheel(input).printWheel();
+                    }
 
             }
 
@@ -125,29 +132,29 @@ public class Main {
 
                 "\nChoose action:\n\n" +
 
-                "1 - change current speed;\n" +
-                "2 - add a passenger;\n" +
-                "3 - remove a passenger;\n" +
-                "4 - remove all passengers;\n" +
+                "   1 - change current speed;\n" +
+                "   2 - add a passenger;\n" +
+                "   3 - remove a passenger;\n" +
+                "   4 - remove all passengers;\n" +
 //                "5 - get a door;\n" +
 //                "6 - get a wheel;\n" +
-                "5 - remove all wheels;\n" +
-                "6 - add new wheel(s);\n" +
-                "7 - get current maximum speed;\n" +
-                "8 - show all information about a car;\n\n" +
+                "   5 - remove all wheels;\n" +
+                "   6 - add new wheel(s);\n" +
+                "   7 - get current maximum speed;\n" +
+                "   8 - show all information about a car;\n\n" +
 
-                "9 - renew a tire;\n" +
-                "10 - wear a tire;\n" +
-                "11 - show all information about a car wheel;\n\n" +
-                "12 - get wear level of the tire;\n\n" +
+                "   9 - renew a tire;\n" +
+                "   10 - wear a tire;\n" +
+                "   11 - show all information about a car wheel;\n\n" +
+                "   12 - get wear level of the tire;\n\n" +
 
-                "13 - open a door;\n" +
-                "14 - close a door;\n" +
-                "15 - open/close a door;\n" +
-                "16 - open a window;\n" +
-                "17 - close a window;\n" +
-                "18 - open/close a window;\n" +
-                "19 - show all information about a car door;\n\n" +
+                "   13 - open a door;\n" +
+                "   14 - close a door;\n" +
+                "   15 - open/close a door;\n" +
+                "   16 - open a window;\n" +
+                "   17 - close a window;\n" +
+                "   18 - open/close a window;\n" +
+                "   19 - show all information about a car door;\n\n" +
 
                 "Press return to quit;\n"
         );
