@@ -20,11 +20,16 @@ import javafx.scene.text.Text;
 import java.io.File;
 
 public class OneSongPlayer extends MP3Player {
+    private String playerName;
     String song;
     Label playingSong;
     File file;
     Media media;
     MediaPlayer mediaPlayer;
+
+    public String getPlayerName() {
+        return playerName;
+    }
 
     public OneSongPlayer(double price) {
         super(price);
@@ -38,8 +43,7 @@ public class OneSongPlayer extends MP3Player {
 
     public void show(Pane root) {
         playingSong = new Label();
-        file = new File(song);
-        media = new Media(file.toURI().toString());
+        media = new Media(new File(song).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(0.1);
 
@@ -47,8 +51,8 @@ public class OneSongPlayer extends MP3Player {
         mainBlock.setPadding(new Insets(20));
         mainBlock.setSpacing(20);
 
-        Text block1 = new Text("Player #1");
-        block1.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 20));
+        Text playerNumber = new Text(getPlayerName());
+        playerNumber.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 20));
 
         HBox block2 = new HBox();
         block2.setSpacing(10);
@@ -81,7 +85,7 @@ public class OneSongPlayer extends MP3Player {
         Label block3_1 = new Label("Playing:");
         block3.getChildren().addAll(block3_1,playingSong);
 
-        mainBlock.getChildren().addAll(block1,block2,block3);
+        mainBlock.getChildren().addAll(playerNumber,block2,block3);
         root.getChildren().add(mainBlock);
     }
 }

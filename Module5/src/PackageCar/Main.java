@@ -5,158 +5,171 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        Car car = new Car(20170101);
-        car.addNewWheels(4);
-        if (car.getWheels() == null) System.out.println("OOps");
-        System.out.println(car.getWheel(1).getTireWear());
-        System.out.println(car.getWheel(1).getTireWear());
-
-
-        car.validateWheel(1);
+        Car car = new Car(20170101,"Internal Combustion",300.0,8.0,4,4,0.0);
 
         Scanner sc = new Scanner(System.in);
-        int option;
-        String repeat = "NO";
+        double inputDouble;
+        int inputInt;
 
+        showOptions();
         do {
-            showOptions();
-            option = sc.nextInt();
+            System.out.print("\nPlease choose an option: ");
+            inputInt = sc.nextInt();
+            if (inputInt == 0) break;
 
-            switch (option)
-            {
-                case 0:
-                    break;
+            switch (inputInt) {
+
                 case 1:
-                    System.out.println("Enter speed value:");
-                    car.changeCurrentSpeed(sc.nextDouble());
+                    System.out.print("Enter new speed value: ");
+                    inputDouble = sc.nextDouble();
+                    car.changeCurrentSpeed(inputDouble);
+                    System.out.println("Current speed was changed to " + inputDouble + " km/h.");
                     break;
                 case 2:
                     car.addPassenger();
-                    System.out.println("One passenger added.");
                     break;
                 case 3:
                     car.removePassenger();
-                    System.out.println("One passenger removed.");
                     break;
                 case 4:
                     car.removeAllPassengers();
-                    System.out.println("All passengers removed.");
+                    System.out.println("All passengers were removed.");
                     break;
                 case 5:
                     car.removeAllWheels();
-                    System.out.println("All wheels removed.");
+                    System.out.println("All wheels were removed.");
                     break;
                 case 6:
-                    System.out.println("Enter number of wheels to be added:");
+                    System.out.print("Enter number of wheels to be added: ");
                     int a = sc.nextInt();
                     car.addNewWheels(a);
                     System.out.println(a + " new wheels have been added.");
                     break;
                 case 7:
-                    System.out.println("Current maximum speed is " + car.getMaxSpeedUsedCar() + " km/h.");
+                    System.out.println("Current maximum speed is " + car.getCurrentMaxSpeed() + " km/h.");
                     break;
                 case 8:
                     car.printCar();
                     break;
                 case 9:
-                    if (car.getWheels() == null) System.out.println("There are no wheels on the car.");
-                    else {
-                        System.out.println("Enter wheel number:");
-                        int input = sc.nextInt();
-                        if(car.getWheel(input) == null) System.out.println("Missing wheel.");
+                    inputInt = car.validateWheel();
+                    if (inputInt != -1)
+                        if (car.getWheel(inputInt).getTireWear() == 1.0) System.out.println("Tire is already new.");
                         else {
-                            car.getWheel(input).renewTire();
-                            System.out.println("Tire #" + input + " has been renewed.");
+                            car.getWheel(inputInt).renewTire();
+                            System.out.println("Tire #" + inputInt + " has been renewed.");
                         }
-                    }
                     break;
                 case 10:
-                    if (car.getWheels() == null) System.out.println("There are no wheels on the car.");
-                    else {
-                        System.out.println("Enter wheel number:");
-                        int input1 = sc.nextInt();
-                        if(car.getWheel(input1) == null) System.out.println("Missing wheel.");
-                        else {
-                            System.out.println("Enter percentage:");
-                            double input2 = sc.nextDouble();
-                            car.getWheel(input1).wearTire(input2);
-                            System.out.println("Tire #" + input1 + " has been worn at " + input2 + "%. " +
-                                    "Wear level of the tire (from 0 to 1) now is "
-                                    + car.getWheel(input1).getTireWear() + ".");
-                        }
+                    inputInt = car.validateWheel();
+                    if (inputInt != -1) {
+                        System.out.print("Enter percentage (0.0 - 100.0%): ");
+                        double percentage = sc.nextDouble();
+                        car.getWheel(inputInt).wearTire(percentage);
+                        System.out.println("Tire #" + inputInt + " has been worn at " + percentage + "%. " +
+                                "Wear level of the tire (from 0 to 1) now is "
+                                + car.getWheel(inputInt).getTireWear() + ".");
                     }
                     break;
                 case 11:
-                    if (car.getWheels() == null) System.out.println("There are no wheels on the car.");
-                    else {
-                        System.out.println("Enter wheel number:");
-                        int input = sc.nextInt();
-                        if (car.getWheel(input) == null) System.out.println("Missing wheel.");
-                        else car.getWheel(input).printWheel();
-                    }
+                    inputInt = car.validateWheel();
+                    if (inputInt != -1) System.out.println("Wear level of the tire (from 0.0 to 1.0) is "
+                            + car.getWheel(inputInt).getTireWear() + ".");
                     break;
                 case 12:
-                    if (car.getWheels() == null) System.out.println("There are no wheels on the car.");
-                    else {
-                        int input;
-                        do {
-                            System.out.println("Enter wheel number:");
-                            input = sc.nextInt();
-                            if (car.getWheel(input) == null) System.out.println("Missing wheel.");
-                        } while (car.getWheel(input) != null || input != 0);
-                        if (car.getWheel(input) != null)
-                            System.out.println("Wear level of the tire (from 0 to 1) is "
-                                    + car.getWheel(input).getTireWear() + ".");
+                    inputInt = car.validateDoor();
+                    if (inputInt != -1) {
+                        if (car.getDoor(inputInt).getDoorState()) System.out.println("Door is already open.");
+                        else {
+                            car.getDoor(inputInt).openDoor();
+                            System.out.println("Door #" + inputInt + " was opened.");
+                        }
                     }
                     break;
                 case 13:
-                    if (car.getDoors() == null) System.out.println("There are no doors on the car.");
-                    else {
-                        System.out.println("Enter wheel number:");
-                        int input = sc.nextInt();
-                        if (car.getWheel(input) == null) System.out.println("Missing wheel.");
-                        else car.getWheel(input).printWheel();
+                    inputInt = car.validateDoor();
+                    if (inputInt != -1) {
+                        if (!car.getDoor(inputInt).getDoorState()) System.out.println("Door is already closed.");
+                        else {
+                            car.getDoor(inputInt).closeDoor();
+                            System.out.println("Door #" + inputInt + " was closed.");
+                        }
                     }
-
+                    break;
+                case 14:
+                    inputInt = car.validateDoor();
+                    if (inputInt != -1) {
+                        car.getDoor(inputInt).openOrCloseDoor();
+                        System.out.print("Door #" + inputInt + " was ");
+                        System.out.println(car.getDoor(inputInt).getDoorState() ? "opened." : "closed.");
+                    }
+                    break;
+                case 15:
+                    inputInt = car.validateDoor();
+                    if (inputInt != -1) {
+                        if (car.getDoor(inputInt).getWindowState()) System.out.println("Window is already open.");
+                        else {
+                            car.getDoor(inputInt).openWindow();
+                            System.out.println("Window in door #" + inputInt + " was opened.");
+                        }
+                    }
+                    break;
+                case 16:
+                    inputInt = car.validateDoor();
+                    if (inputInt != -1) {
+                        if (!car.getDoor(inputInt).getWindowState()) System.out.println("Window is already closed.");
+                        else {
+                            car.getDoor(inputInt).closeWindow();
+                            System.out.println("Window in door #" + inputInt + " was closed.");
+                        }
+                    }
+                    break;
+                case 17:
+                    inputInt = car.validateDoor();
+                    if (inputInt != -1) {
+                        car.getDoor(inputInt).openOrCloseWindow();
+                        System.out.print("Window in door #" + inputInt + " was ");
+                        System.out.println(car.getDoor(inputInt).getWindowState() ? "opened." : "closed.");
+                    }
+                    break;
+                case 18:
+                    inputInt = car.validateDoor();
+                    if (inputInt != -1) car.getDoor(inputInt).printDoor();
+                    break;
+                default:
+                    System.out.println("There is no such option.");
             }
 
-            System.out.println("\nContinue? (Y/N)");
-            sc.nextLine();
-            repeat = sc.nextLine();
-        } while (repeat.equals("Y"));
+        } while (true);
 
     }
 
     static void showOptions() {
         System.out.println(
 
-                "\nChoose action:\n\n" +
+                "Available options:\n\n" +
 
                 "   1 - change current speed;\n" +
                 "   2 - add a passenger;\n" +
                 "   3 - remove a passenger;\n" +
                 "   4 - remove all passengers;\n" +
-//                "5 - get a door;\n" +
-//                "6 - get a wheel;\n" +
                 "   5 - remove all wheels;\n" +
                 "   6 - add new wheel(s);\n" +
                 "   7 - get current maximum speed;\n" +
-                "   8 - show all information about a car;\n\n" +
+                "   8 - show all information about the car;\n\n" +
 
                 "   9 - renew a tire;\n" +
                 "   10 - wear a tire;\n" +
-                "   11 - show all information about a car wheel;\n\n" +
-                "   12 - get wear level of the tire;\n\n" +
+                "   11 - get wear level of the tire;\n\n" +
 
-                "   13 - open a door;\n" +
-                "   14 - close a door;\n" +
-                "   15 - open/close a door;\n" +
-                "   16 - open a window;\n" +
-                "   17 - close a window;\n" +
-                "   18 - open/close a window;\n" +
-                "   19 - show all information about a car door;\n\n" +
-
-                "Press return to quit;\n"
+                "   12 - open a door;\n" +
+                "   13 - close a door;\n" +
+                "   14 - open/close a door;\n" +
+                "   15 - open a window;\n" +
+                "   16 - close a window;\n" +
+                "   17 - open/close a window;\n" +
+                "   18 - show all information about a car door;\n\n" +
+                "   0 - exit."
         );
     }
 

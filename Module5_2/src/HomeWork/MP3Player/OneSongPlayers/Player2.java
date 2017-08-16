@@ -7,6 +7,11 @@ public class Player2 extends OneSongPlayer {
     }
 
     @Override
+    public String getPlayerName() {
+        return "Player#2";
+    }
+
+    @Override
     public void playSong() {
         System.out.println("Error");
     }

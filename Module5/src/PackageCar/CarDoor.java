@@ -35,11 +35,20 @@ public class CarDoor {
     // Constructors:
 
     public CarDoor() {
-        this(true, true);
+        this(false, false);
     }
     public CarDoor(boolean doorState, boolean windowState) {
         this.doorState = doorState;
         this.windowState = windowState;
+    }
+
+    // Getters:
+
+    public boolean getDoorState() {
+        return doorState;
+    }
+    public boolean getWindowState() {
+        return windowState;
     }
 
     // Methods:
@@ -65,7 +74,8 @@ public class CarDoor {
     }
 
     void printDoor() {
-        System.out.println(doorState ? "Door is open" : "Door is closed");
-        System.out.println(windowState ? "Window is open" : "Window is closed");
+        System.out.println("\nInformation about the door:");
+        System.out.print(doorState ? "  The door is open and " : "  The door is closed and ");
+        System.out.println(windowState ? "window in the door is open." : "window in the door is closed.");
     }
 }
