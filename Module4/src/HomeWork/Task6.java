@@ -1,7 +1,7 @@
-/*
-Задание 6
-Решить задачу 2, без использования циклов. Использовав рекурсию.
-*/
+package HomeWork;
+
+
+import java.util.Scanner;
 
 /**
  "width" - rectangle's width;
@@ -11,8 +11,16 @@
 
 public class Task6 {
 
-    static void drawRectangle(int width, int height) {
+    static void drawRectangle() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Task #6 selected.");
+        System.out.print("Specify rectangle's width: ");
+        int width = sc.nextInt();
+        System.out.print("Specify rectangle's height: ");
+        int height = sc.nextInt();
+        System.out.println("Result:");
         drawRectangle(width,width,height);
+        System.out.println();
     }
 
     static void drawRectangle(int temp_width, int width, int height) {
@@ -24,9 +32,5 @@ public class Task6 {
             System.out.println("");
             drawRectangle(width, width, height - 1);
         }
-    }
-
-    public static void main(String[] args) {
-        drawRectangle(5,3);
     }
 }
