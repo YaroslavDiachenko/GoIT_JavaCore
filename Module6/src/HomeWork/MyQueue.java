@@ -2,13 +2,14 @@ package HomeWork;
 
 
 public class MyQueue<E> {
+
     private int size = 0;
     private Node<E> first;
     private Node<E> last;
 
-    public MyQueue() {}
+    MyQueue() {}
 
-    public void add(E value) {
+    void add(E value) {
         final Node<E> oldLast = last;
         final Node<E> addedNode = new Node(oldLast,value,null);
         last = addedNode;
@@ -16,11 +17,10 @@ public class MyQueue<E> {
         else oldLast.next = addedNode;
         size++;
     }
-
-    public void remove() {
+    void remove() {
         if (size == 0) System.out.println("List is empty");
         else {
-            if (first.prev == null) first = last = null;
+            if (first.next == null) first = last = null;
             else {
                 first.next.prev = null;
                 first.item = null;
@@ -29,8 +29,7 @@ public class MyQueue<E> {
             size--;
         }
     }
-
-    public void clear() {
+    void clear() {
         if (size == 0) System.out.println("List is already empty");
         Node<E> element = first;
         do {
@@ -42,30 +41,27 @@ public class MyQueue<E> {
         } while (element != null);
         size = 0;
     }
-
-    public int size() {
+    int size() {
         return size;
     }
-
-    public E get(int index) {
+    E get(int index) {
         Node<E> node = findNodeByIndex(index);
         if (node != null) return node.item;
         return null;
     }
-
-    public E pick() {
+    E pick() {
         if (size == 0) System.out.println("List is empty");
         else return first.item;
         return null;
     }
-
-    public E poll() {
+    E poll() {
         E element = pick();
-        if (element != null) remove();
-        return element;
-    }
-
-    public Node<E> findNodeByIndex(int index) {
+        if (element != null) {
+            remove();
+            return element;
+        }
+        return null;    }
+    Node<E> findNodeByIndex(int index) {
         Node<E> searchedElement = first;
 
         if (index < 0) System.out.println("Illegal index");
@@ -89,8 +85,7 @@ public class MyQueue<E> {
         }
         return null;
     }
-
-    public void show() {
+    void show() {
         if (size == 0) System.out.println("List is empty");
         else {
             Node<E> element = first;

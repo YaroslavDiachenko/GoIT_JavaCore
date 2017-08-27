@@ -2,13 +2,14 @@ package HomeWork;
 
 
 public class MyLinkedList<E> {
+
     private int size = 0;
     private Node<E> first;
     private Node<E> last;
 
-    public MyLinkedList() {}
+    MyLinkedList() {}
 
-    public void add(E value) {
+    void add(E value) {
         final Node<E> oldLast = last;
         final Node<E> addedNode = new Node(oldLast,value,null);
         last = addedNode;
@@ -16,8 +17,7 @@ public class MyLinkedList<E> {
         else oldLast.next = addedNode;
         size++;
     }
-
-    public void remove(int index) {
+    void remove(int index) {
         Node<E> removeElement = findNodeByIndex(index);
         if (removeElement != null) {
             final Node<E> next = removeElement.next;
@@ -40,8 +40,7 @@ public class MyLinkedList<E> {
             size--;
         }
     }
-
-    public void clear() {
+    void clear() {
         if (size == 0) System.out.println("List is already empty");
         Node<E> element = first;
         do {
@@ -53,18 +52,15 @@ public class MyLinkedList<E> {
         } while (element != null);
         size = 0;
     }
-
-    public int size() {
+    int size() {
         return size;
     }
-
-    public E get(int index) {
+    E get(int index) {
         Node<E> node = findNodeByIndex(index);
         if (node != null) return node.item;
         return null;
     }
-
-    public Node<E> findNodeByIndex(int index) {
+    Node<E> findNodeByIndex(int index) {
         Node<E> searchedElement = first;
 
         if (index < 0) System.out.println("Illegal index");
@@ -88,8 +84,7 @@ public class MyLinkedList<E> {
         }
         return null;
     }
-
-    public void show() {
+    void show() {
         if (size == 0) System.out.println("List is empty");
         else {
             Node<E> element = first;
