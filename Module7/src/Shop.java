@@ -11,8 +11,7 @@ import java.util.List;
 
 public class Shop {
 
-
-    int moneyBalance;
+    double moneyBalance;
     List<Fruit> fruits;
     List<Client> clients;
 
@@ -24,7 +23,6 @@ public class Shop {
         this.fruits = fruits;
         this.moneyBalance = 0;
     }
-
 
     void addFruits(String path) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(path));
@@ -109,24 +107,33 @@ public class Shop {
         return fruits;
     }
 
-//    void sell(String path) throws IOException {
-//        List<Client> clients;
-//        BufferedReader reader = new BufferedReader(new FileReader(path));
-//        try {
-//            String json = reader.readLine();
-//            clients = JSON.parseArray(json, Client.class);
-//            Date today = new Date();
-//
-//            for (Client e : clients) {
-//                if (e.count >= getAvailableFruits(today,e.type).size())
-//            }
-//
-//
-//
-//        } catch (Exception e) {
-//            System.err.println("Error");
-//        }
-//
-//    }
+    void sell(String path, Date date) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        try {
+            Gson gson = new Gson();
+            String json = reader.readLine();
+            Shop temp = gson.fromJson(json, new TypeToken<Shop>(){}.getType());
+
+            for (Client e : temp.clients) {
+                System.out.print("Client: " + e.name + "; Product type: " + e.type + "; Quantity: " + e.count);
+                List<Fruit> list = getAvailableFruits(date, e.type);
+                if (list.size() > 0 && e.count <= list.size()) {
+                    for (int i = 0, j = 0; j < e.count; i++) {
+                        Fruit fruit  = fruits.get(i);
+                        if (fruit.getType().equals(e.type)) {
+                            moneyBalance += fruit.getPrice();
+                            fruits.remove(i);
+                            i--;
+                            j++;
+                        }
+                    }
+                    System.out.println("; Status: Sold.");
+                }else System.out.println("; Status: Not sold.");
+            }
+            System.out.println();
+        } catch (Exception e) {
+            System.err.println("Error");
+        }
+    }
 
 }

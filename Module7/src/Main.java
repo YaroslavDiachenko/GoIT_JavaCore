@@ -17,7 +17,7 @@ public class Main {
         return null;
     }
 
-    static void show(List<Fruit> list) {
+    static void showFruits(List<Fruit> list) {
         int i = 1;
         for (Fruit e : list) {
             System.out.println("Fruit #" + i +
@@ -28,8 +28,21 @@ public class Main {
             );
             i++;
         }
+        System.out.println();
     }
 
+    static void showClients(List<Client> list) {
+        int i = 1;
+        for (Client e : list) {
+            System.out.println("Client #" + i +
+                    ":   Name: " + e.name +
+                    ";   Fruit type: " + e.type +
+                    ";   Count: " + e.count
+            );
+            i++;
+        }
+        System.out.println();
+    }
 
     public static void main(String[] args) throws IOException {
 
@@ -38,17 +51,24 @@ public class Main {
 
         Date date1 = setDate("2017-01-01");
         Date date2 = setDate("2017-01-02");
-
-//        ArrayList<Fruit> fruits = new ArrayList<>();
-//        fruits.add(new Fruit(Fruit.Type.Banana,10, date1,8.3));
-//        fruits.add(new Fruit(Fruit.Type.Apple,20, date2,5.5));
-//        fruits.add(new Fruit(Fruit.Type.Strawberry,8, date1,14.8));
-//        fruits.add(new Fruit(Fruit.Type.Pear,18, date2,6.2));
-//        fruits.add(new Fruit(Fruit.Type.Grape,12, date1,5.5));
-//        fruits.add(new Fruit(Fruit.Type.Lemon,30, date1,12.2));
+        Date date3 = setDate("2017-01-05");
 
         Shop shop = new Shop();
-        shop.load(path1);
-        show(shop.fruits);
+
+        shop.fruits.add(new Fruit(Fruit.Type.Banana,10, date1,8.3));
+        shop.fruits.add(new Fruit(Fruit.Type.Apple,20, date2,5.5));
+        shop.fruits.add(new Fruit(Fruit.Type.Strawberry,8, date1,14.8));
+        shop.fruits.add(new Fruit(Fruit.Type.Pear,18, date2,6.2));
+        shop.fruits.add(new Fruit(Fruit.Type.Pear,18, date2,6.2));
+        shop.fruits.add(new Fruit(Fruit.Type.Grape,12, date1,5.5));
+        shop.fruits.add(new Fruit(Fruit.Type.Lemon,30, date1,12.2));
+
+        System.out.println("Money balance: " + shop.moneyBalance);
+//        shop.load(path1);
+        showFruits(shop.fruits);
+        shop.sell(path2,date3);
+        System.out.println("Money balance: " + shop.moneyBalance);
+        showFruits(shop.fruits);
+
     }
 }
