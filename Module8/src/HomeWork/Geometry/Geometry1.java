@@ -57,7 +57,7 @@ public class Geometry1 {
                 while(true) {
                     Platform.runLater(() -> move(i));
                     try {
-                        Thread.sleep(30);
+                        Thread.sleep(20);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

@@ -35,7 +35,7 @@ public class Geometry2 extends Geometry1 {
                     Platform.runLater(() -> move(i));
                 }
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(20);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
