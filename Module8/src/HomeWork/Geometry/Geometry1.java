@@ -4,12 +4,16 @@ package HomeWork.Geometry;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
 
 public class Geometry1 {
 
@@ -19,56 +23,52 @@ public class Geometry1 {
     HBox buttons = new HBox(10);
     Pane pane = new Pane();
     MyRectangle[] rectangles;
+    List<Thread> threads;
 
     public Geometry1() {
         graphicInterface();
+        addMultiThreadsButton();
     }
 
     void graphicInterface() {
+        pane.setMinSize(number,number/2);
+        pane.setMaxSize(number,number/2);
         buttons.setPadding(new Insets(10,10,10,10));
         buttons.setMinWidth(number);
         buttons.setStyle("-fx-background-color: LIGHTGREY;");
-
-        Button button1 = new Button("Multi Threads");
-
-        buttons.getChildren().addAll(button1);
-
-        pane.setMinSize(number,number/2);
-        pane.setMaxSize(number,number/2);
-
         layout.getChildren().addAll(buttons, pane);
-
+    }
+    void addMultiThreadsButton() {
+        Button button1 = new Button("Multi Threads");
+        buttons.getChildren().add(button1);
         button1.setOnMouseClicked(event -> {
-            clearRectangles();
-            int random = (int)randomDouble(3,10);
-            rectangles = new MyRectangle[random];
-            for (int i = 0; i < rectangles.length; i++) {
-                rectangles[i] = new MyRectangle(randomDouble(0, number - 60), randomDouble(0, number/2 - 60), randomDouble(30, 60), randomDouble(30, 60), randomVector());
-                rectangles[i].setFill(randomColor());
-                pane.getChildren().add(rectangles[i]);
-            }
+            buttonClickAction();
             runMultiThreads();
         });
     }
-
     void runMultiThreads() {
+        final CyclicBarrier BARRIER = new CyclicBarrier(rectangles.length);
         for (MyRectangle i : rectangles) {
             final Thread thread = new Thread(() -> {
                 while(true) {
-                    Platform.runLater(() -> move(i));
                     try {
+                        BARRIER.await();
                         Thread.sleep(20);
                     } catch (InterruptedException e) {
+                        break;
+                    } catch (BrokenBarrierException e) {
                         e.printStackTrace();
                     }
+
+                    Platform.runLater(() -> moveRectangle(i));
                 }
             });
             thread.start();
         }
     }
 
-    // Methods perform rectangle's one move and change direction (vector) for its next move (if needed)
-    void move(MyRectangle rectangle) {
+    // Methods perform rectangle's one moveRectangle and change direction (vector) for its next moveRectangle (if needed)
+    void moveRectangle(MyRectangle rectangle) {
         switch (rectangle.vector) {
             case UpRight:
                 rectangle.setX(rectangle.getX() + 1);
@@ -113,10 +113,33 @@ public class Geometry1 {
         else return MyRectangle.Vector.DownLeft;
     }
 
-    // Aimed to clear pane, called per setOnMouseClicked event
+    // Aimed to clear/fill pane, called per setOnMouseClicked event
+    void buttonClickAction() {
+        if (threads == null) threads = new ArrayList<>();
+        breakRunningTasks();
+        clearRectangles();
+        generateRectangles();
+    }
+    void breakRunningTasks() {
+        if (threads != null) {
+            for (Thread i : threads) {
+                i.interrupt();
+            }
+        }
+    }
     void clearRectangles() {
         if (rectangles != null && rectangles.length > 0) {
             pane.getChildren().removeAll(rectangles);
+        }
+        rectangles = null;
+    }
+    void generateRectangles() {
+        int random = (int)randomDouble(3,10);
+        rectangles = new MyRectangle[random];
+        for (int i = 0; i < rectangles.length; i++) {
+            rectangles[i] = new MyRectangle(randomDouble(0, number - 60), randomDouble(0, number/2 - 60), randomDouble(30, 60), randomDouble(30, 60), randomVector());
+            rectangles[i].setFill(randomColor());
+            pane.getChildren().add(rectangles[i]);
         }
     }
 }
