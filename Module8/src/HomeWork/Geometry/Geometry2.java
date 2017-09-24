@@ -26,7 +26,7 @@ public class Geometry2 extends Geometry1 {
                     Platform.runLater(() -> moveRectangle(i));
                 }
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(speed);
                 } catch (InterruptedException e) {
                     break;
                 }

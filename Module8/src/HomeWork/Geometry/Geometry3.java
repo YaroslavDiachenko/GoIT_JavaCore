@@ -10,6 +10,8 @@ import java.util.concurrent.CyclicBarrier;
 
 public class Geometry3 extends Geometry2 {
     static int coresQuantity = Runtime.getRuntime().availableProcessors();
+    static final CyclicBarrier BARRIER = new CyclicBarrier(coresQuantity);
+    CheckBox checkBox = new CheckBox("Collide with each other");
 
     public Geometry3() {
         addOptimalThreadsButton();
@@ -17,7 +19,7 @@ public class Geometry3 extends Geometry2 {
 
     void addOptimalThreadsButton() {
         Button button3 = new Button("Optimal Threads");
-        CheckBox checkBox = new CheckBox("Collide with each other");
+        System.out.println(checkBox.isSelected());
         buttons.getChildren().addAll(button3,checkBox);
 
         button3.setOnMouseClicked(event -> {
@@ -45,12 +47,12 @@ public class Geometry3 extends Geometry2 {
     }
 
     void runOptimalThreads(int left, int right) {
-        final CyclicBarrier BARRIER = new CyclicBarrier(coresQuantity);
+        boolean x = checkBox.isSelected();
         final Thread thread = new Thread(() -> {
             while(true) {
                 try {
                     BARRIER.await();
-                    Thread.sleep(20);
+                    Thread.sleep(speed);
                 } catch (InterruptedException e) {
                     break;
                 } catch (BrokenBarrierException e) {
@@ -59,11 +61,15 @@ public class Geometry3 extends Geometry2 {
 
                 for (int i = left; i < right; i++) {
                     final MyRectangle temp = rectangles[i];
-                    Platform.runLater(() -> moveRectangle(temp));
+                    Platform.runLater(() -> {
+                        if (x) moveRectangleBounce(temp);
+                        else moveRectangle(temp);
+                    });
                 }
             }
         });
         thread.start();
         threads.add(thread);
     }
+
 }
