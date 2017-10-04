@@ -1,7 +1,6 @@
 package Program;
 
 
-import YouTubeData.Channel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -10,16 +9,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-public class ResultScreen extends RequestScreen {
+public class RequestResultScreen extends RequestScreen {
 
-    private final ObservableList<Channel> data = FXCollections.observableArrayList(
-            new Channel("Test1",5,10,15,20,25),
-            new Channel("Test2",3,10,16,14,12),
-            new Channel("Test3",7,10,17,3,34),
-            new Channel("Test4",1,10,18,90,7)
-    );
+    public static final ObservableList<Channel> data = FXCollections.observableArrayList();
 
-    public ResultScreen() {
+    public RequestResultScreen() {
         addInterface();
     }
 
@@ -27,7 +21,7 @@ public class ResultScreen extends RequestScreen {
         Text title = new Text("Table test");
 
         TableView<Channel> table = new TableView<>();
-        TableColumn column1 = new TableColumn("Channel name");
+        TableColumn column1 = new TableColumn("OneChannel name");
         column1.setCellValueFactory(new PropertyValueFactory<Channel,String>("channelName"));
 
         TableColumn column2 = new TableColumn("Creation date");

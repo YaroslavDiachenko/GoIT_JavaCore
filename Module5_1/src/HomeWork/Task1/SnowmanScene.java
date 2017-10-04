@@ -52,7 +52,7 @@ public class SnowmanScene {
         TextField field1 = new TextField();
         TextField field2 = new TextField();
         TextField field3 = new TextField();
-        TextField field4 = new TextField ();
+        TextField field4 = new TextField();
 
         Text message1 = new Text();
         Text message2 = new Text();

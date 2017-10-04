@@ -20,26 +20,19 @@ public class Main extends Application{
     static String nameRequest5 = "Compare media resonans";
     static String nameRequest6 = "Sort by media resonans";
 
-    static String descriptionRequest1 = "Shows global information about a channel.";
-    static String descriptionRequest2 = "Compares global information of two channels.";
-    static String descriptionRequest3 = "Sorts all channels by their data.";
-    static String descriptionRequest4 = "Shows total number of channel's comments.";
-    static String descriptionRequest5 = "Compares total number of two channels' comments.";
-    static String descriptionRequest6 = "Sorts channels by their total number of comments.";
-
     static Pane pane = new Pane();
     static MainScreen mainScreen = new MainScreen();
     ProgramMenu programMenu = new ProgramMenu();
     static ProgramSettings programSettings = new ProgramSettings();
     static YouTubeAnalytics youTubeAnalytics = new YouTubeAnalytics();
-    static RequestScreen request1 = new RequestOneChannel(nameRequest1,descriptionRequest1);
-    static RequestScreen request2 = new RequestManyChannels(nameRequest2,descriptionRequest2);
-    static RequestScreen request3 = new RequestManyChannels(nameRequest3,descriptionRequest3);
-    static RequestScreen request4 = new RequestOneChannel(nameRequest4,descriptionRequest4);
-    static RequestScreen request5 = new RequestManyChannels(nameRequest5,descriptionRequest5);
-    static RequestScreen request6 = new RequestManyChannels(nameRequest6,descriptionRequest6);
+    static RequestScreen request1 = new RequestOneChannel(1);
+    static RequestScreen request2 = new RequestManyChannels(2);
+    static RequestScreen request3 = new RequestManyChannels(3);
+    static RequestScreen request4 = new RequestOneChannel(4);
+    static RequestScreen request5 = new RequestManyChannels(5);
+    static RequestScreen request6 = new RequestManyChannels(6);
 
-    static ResultScreen resultScreen = new ResultScreen();
+    static RequestResultScreen resultScreen = new RequestResultScreen();
 
     @Override
     public void start(Stage primaryStage) throws Exception {

@@ -10,8 +10,8 @@ public class Player4 extends MultiSongsPlayer {
         System.out.println(playlist[playlist.length-1]);
     }
     public void playAllSongs() {
-        for(String i : playlist) {
-            System.out.println("Playing: " + i);
-        }
+//        for(String i : playlist) {
+//            System.out.println("Playing: " + i);
+//        }
     }
 }

@@ -1,21 +1,15 @@
 package Program;
 
 
-import YouTubeData.Channel;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RequestManyChannels extends RequestOneChannel {
 
 
-    public RequestManyChannels(String requestName, String resultDescription) {
-        super(requestName, resultDescription);
+    public RequestManyChannels(int requestType) {
+        super(requestType);
     }
 
     @Override
@@ -26,8 +20,8 @@ public class RequestManyChannels extends RequestOneChannel {
 
     @Override
     void addInputInterface() {
-        Text text1 = new Text("Channel 1:");
-        Text text2 = new Text("Channel 2:");
+        Text text1 = new Text("OneChannel 1:");
+        Text text2 = new Text("OneChannel 2:");
         channelNumbers.getChildren().addAll(text1,text2);
         TextField textField1 = new TextField();
         TextField textField2 = new TextField();
