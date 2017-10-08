@@ -1,12 +1,12 @@
-package YouTubeData;
+package YouTubeData_Videos;
 
+
+import YouTubeData_Channels.Statistics;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class OneChannel {
-    public Snippet snippet;
+public class Video {
     public Statistics statistics;
-
 
 }

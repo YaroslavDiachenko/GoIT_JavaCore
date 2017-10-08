@@ -6,19 +6,23 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 public class RequestScreen {
-    VBox screen = new VBox();
+    public Button buttonBackAnalyticsScreen;
+    public VBox screen;
 
     public RequestScreen() {
+        screen = new VBox();
         graphicInterface();
         addButtonBackAnalyticsScreen();
     }
 
     void graphicInterface() {
+        screen.setSpacing(5);
         screen.setPadding(new Insets(10));
     }
 
     void addButtonBackAnalyticsScreen() {
-        Button buttonBackAnalyticsScreen = new Button("Back to YouTube Analytics");
+        buttonBackAnalyticsScreen = new Button();
+        buttonBackAnalyticsScreen.setText("Back to YouTube Analytics");
         buttonBackAnalyticsScreen.setFocusTraversable(false);
         buttonBackAnalyticsScreen.setOnAction(event -> {
             Main.pane.getChildren().clear();
@@ -26,5 +30,4 @@ public class RequestScreen {
         });
         screen.getChildren().add(buttonBackAnalyticsScreen);
     }
-
 }

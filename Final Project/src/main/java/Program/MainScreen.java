@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import static Program.Main.*;
 
 public class MainScreen {
     VBox screen = new VBox();
@@ -20,14 +21,15 @@ public class MainScreen {
         Hyperlink hyperlinkYouTubeAnalytics = new Hyperlink("YouTube Analytics");
         hyperlinkYouTubeAnalytics.setFocusTraversable(false);
         hyperlinkYouTubeAnalytics.setOnAction(event -> {
-            Main.pane.getChildren().clear();
-            Main.pane.getChildren().add(Main.youTubeAnalytics.screen);
+            pane.getChildren().clear();
+            pane.getChildren().add(youTubeAnalytics.screen);
         });
         Hyperlink hyperlinkSettings = new Hyperlink("ProgramSettings");
         hyperlinkSettings.setFocusTraversable(false);
         hyperlinkSettings.setOnAction(event -> {
-            Main.pane.getChildren().clear();
-            Main.pane.getChildren().add(Main.programSettings.screen);
+            programSettings.update();
+            pane.getChildren().clear();
+            pane.getChildren().add(programSettings.screen);
         });
         screen.getChildren().addAll(hello, version, hyperlinkYouTubeAnalytics, hyperlinkSettings);
     }

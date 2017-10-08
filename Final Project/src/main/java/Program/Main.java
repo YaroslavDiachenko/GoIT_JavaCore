@@ -1,6 +1,9 @@
 package Program;
 
 
+import YouTubeData_Channels.ChannelListResponse;
+import YouTubeData_Channels.OneChannel;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,11 +11,15 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.*;
+
 public class Main extends Application{
 
+ // requests names
     static String nameRequest1 = "Show channel info";
     static String nameRequest2 = "Compare channels info";
     static String nameRequest3 = "Sort channels";
@@ -20,38 +27,53 @@ public class Main extends Application{
     static String nameRequest5 = "Compare media resonans";
     static String nameRequest6 = "Sort by media resonans";
 
+ // program objects
     static Pane pane = new Pane();
     static MainScreen mainScreen = new MainScreen();
-    ProgramMenu programMenu = new ProgramMenu();
+    static ProgramMenu programMenu = new ProgramMenu();
     static ProgramSettings programSettings = new ProgramSettings();
     static YouTubeAnalytics youTubeAnalytics = new YouTubeAnalytics();
-    static RequestScreen request1 = new RequestOneChannel(1);
-    static RequestScreen request2 = new RequestManyChannels(2);
-    static RequestScreen request3 = new RequestManyChannels(3);
-    static RequestScreen request4 = new RequestOneChannel(4);
-    static RequestScreen request5 = new RequestManyChannels(5);
-    static RequestScreen request6 = new RequestManyChannels(6);
-
+    static RequestOneChannel requestOneChannel = new RequestOneChannel();
+    static RequestManyChannels requestManyChannels = new RequestManyChannels();
     static RequestResultScreen resultScreen = new RequestResultScreen();
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        pane.getChildren().add(mainScreen.screen);
-        VBox layout = new VBox();
-        layout.getChildren().addAll(ProgramMenu.menuBar, pane);
-        Scene scene = new Scene(layout, 600, 400);
-
-        primaryStage.setTitle("YouTube Analytics");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        primaryStage.setOnCloseRequest(e -> {
-            e.consume();
-            boolean answer = confirm("Closing program", "Are you sure you want close the program?");
-            if (answer) primaryStage.close();
-        });
+ // read from file, write to file, convert Json string to object
+    static String readFileToString() {
+     StringBuilder result = new StringBuilder();
+     try (BufferedReader br = new BufferedReader(new FileReader(programSettings.cacheFilePath))) {
+         String line;
+         while ((line = br.readLine()) != null) {
+             result.append(line);
+         }
+         return result.toString();
+     } catch (IOException e) {
+         alert("IOException thrown","Cannot read from file to string.");
+     }
+     return result.toString();
+ }
+    static void writeCacheToFile(String jsonString) {
+        try {
+            File file = new File(programSettings.cacheFilePath);
+            FileWriter writer = new FileWriter(file);
+            writer.write(jsonString);
+            writer.flush();
+        } catch (Exception e){
+            alert("Exception thrown","Cache file not found.");
+        }
+    }
+    static OneChannel convertStringToChannel(String jsonString) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ChannelListResponse channelsResponse = null;
+        try {
+            channelsResponse = objectMapper.readValue(jsonString, ChannelListResponse.class);
+        } catch (IOException e) {
+            alert("IOException thrown","Cannot convert a Json string to an object.");
+        }
+        return channelsResponse.items.get(0);
     }
 
-    public void alert(String title, String message) {
+ // opens separate window with error notification
+    public static void alert(String title, String message) {
         Stage stage = new Stage();
 
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -59,19 +81,21 @@ public class Main extends Application{
         stage.setMinWidth(300);
         stage.setMinHeight(100);
 
-        Label label = new Label();
-        label.setText(message);
+        Text text = new Text();
+        text.setText(message);
         Button closeButton = new Button("Close");
         closeButton.setOnAction(e -> stage.close());
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(label, closeButton);
+        layout.getChildren().addAll(text, closeButton);
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
         stage.setScene(scene);
         stage.showAndWait();
     }
+
+ // opens separate window requesting from user to make YES/NO choice
     public boolean confirm(String title, String message) {
         final boolean[] answer = new boolean[1];
         Stage stage = new Stage();
@@ -109,6 +133,33 @@ public class Main extends Application{
         stage.showAndWait();
         return answer[0];
     }
+
+
+
+ // launches JavaFX application
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        writeCacheToFile("");
+
+
+        pane.getChildren().add(mainScreen.screen);
+        VBox layout = new VBox();
+        layout.getChildren().addAll(programMenu.menuBar, pane);
+        Scene scene = new Scene(layout, 600, 400);
+
+        primaryStage.setTitle("YouTube Analytics");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        primaryStage.setOnCloseRequest(e -> {
+            e.consume();
+            boolean answer = confirm("Closing program", "Are you sure you want close the program?");
+            if (answer) {
+                programSettings.saveSettings();
+                primaryStage.close();
+            }
+        });
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

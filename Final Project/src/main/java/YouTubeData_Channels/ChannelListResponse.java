@@ -1,21 +1,23 @@
-package YouTubeData;
+package YouTubeData_Channels;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class ChannelsResponse {
+public class ChannelListResponse {
     public List<OneChannel> items;
 
+/*
     public void show() {
         System.out.println("--------------------------------" +
-                        "\nsnippet.title: \t\t" + items.get(0).snippet.title +
+                        "\nsnippet.title: \t\t\t\t" + items.get(0).snippet.title +
 //                "\nCreation date: \t\t" + snippet.publishedAt +
-                        "\nstatistics.subscriberCount: \t\t" + items.get(0).statistics.subscriberCount +
+                        "\nstatistics.subscriberCount: " + items.get(0).statistics.subscriberCount +
                         "\nstatistics.videoCount: \t\t" + items.get(0).statistics.videoCount +
                         "\nstatistics.viewCount: \t\t" + items.get(0).statistics.viewCount +
-                        "\nstatistics.commentCount: \t\t" + items.get(0).statistics.commentCount
+                        "\nstatistics.commentCount: \t" + items.get(0).statistics.commentCount
         );
     }
+*/
 }

@@ -1,4 +1,4 @@
-package YouTubeData;
+package YouTubeData_Channels;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

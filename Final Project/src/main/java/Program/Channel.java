@@ -1,8 +1,7 @@
 package Program;
 
 
-import YouTubeData.ChannelsResponse;
-import YouTubeData.OneChannel;
+import YouTubeData_Channels.OneChannel;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
