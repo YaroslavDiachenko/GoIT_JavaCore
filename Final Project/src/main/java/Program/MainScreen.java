@@ -27,7 +27,7 @@ public class MainScreen {
         Hyperlink hyperlinkSettings = new Hyperlink("ProgramSettings");
         hyperlinkSettings.setFocusTraversable(false);
         hyperlinkSettings.setOnAction(event -> {
-            programSettings.update();
+            programSettings.updateSettings();
             pane.getChildren().clear();
             pane.getChildren().add(programSettings.screen);
         });

@@ -59,7 +59,7 @@ public class ProgramMenu{
 
             MenuItem fileMenuSettings = new MenuItem("Settings");
             fileMenuSettings.setOnAction(event -> {
-                programSettings.update();
+                programSettings.updateSettings();
                 pane.getChildren().clear();
                 pane.getChildren().add(programSettings.screen);
             });

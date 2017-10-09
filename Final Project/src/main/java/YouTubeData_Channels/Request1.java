@@ -17,19 +17,17 @@ import java.io.IOException;
 public class Request1 {
 
     public static void main(String[] args) throws UnirestException {
-        ChannelListResponse channelListResponse = requestChannelDataAsObject(channelId);
+//        ChannelListResponse channelListResponse = requestChannelDataAsObject(channelId);
         SearchListResponse searchListResponse = Request2.requestSearchVideosListAsObject(channelId, myApiKey);
         StringBuilder videosList = new StringBuilder();
         for (SearchResult i : searchListResponse.items) {
             videosList.append(i.id.videoId);
             videosList.append(",");
         }
-        VideoListResponse videoListResponse = Request3.requestVideoDataAsString(videosList, myApiKey);
+        VideoListResponse videoListResponse = Request3.requestVideoDataAsObject(videosList.toString(),myApiKey);
+        System.out.println(videoListResponse.countComments());
 
-
-
-
-
+//        VideoListResponse videoListResponse = Request3.requestVideoDataAsObject(videosList.toString(), myApiKey);
     }
 
     static String channelId = "UCJALCpMORvQrlN7dAPLiCWg";
@@ -44,6 +42,7 @@ public class Request1 {
     }
 
     public static String getChannelDataAsString(String channelId) throws UnirestException {
+        System.out.println("Channel data successfully retrieved from server.");
         return requestChannelDataAsString(channelId);
     }
 
@@ -75,7 +74,7 @@ public class Request1 {
         HttpResponse<ChannelListResponse> response = Unirest.get("https://www.googleapis.com/youtube/v3/channels")
                 .queryString("id", channelId)
                 .queryString("part", "snippet,statistics")
-                .queryString("fields", "items(snippet(title,publishedAt),statistics(viewCount,commentCount,subscriberCount,videoCount))")
+                .queryString("fields", "items(snippet(title,publishedAt),statistics(viewCount,subscriberCount,videoCount))")
                 .queryString("key", myApiKey)
                 .asObject(ChannelListResponse.class);
         return response.getBody();
@@ -85,7 +84,7 @@ public class Request1 {
         HttpResponse<String> response = Unirest.get("https://www.googleapis.com/youtube/v3/channels")
                 .queryString("id", channelId)
                 .queryString("part", "snippet,statistics")
-                .queryString("fields", "items(snippet(title,publishedAt),statistics(viewCount,commentCount,subscriberCount,videoCount))")
+                .queryString("fields", "items(snippet(title,publishedAt),statistics(viewCount,subscriberCount,videoCount))")
                 .queryString("maxResults", "3")
                 .queryString("key", myApiKey)
                 .asString();

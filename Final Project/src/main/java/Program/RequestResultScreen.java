@@ -21,7 +21,7 @@ public class RequestResultScreen extends RequestScreen {
         Text title = new Text("Table test");
 
         TableView<Channel> table = new TableView<>();
-        TableColumn column1 = new TableColumn("OneChannel name");
+        TableColumn column1 = new TableColumn("Channel name");
         column1.setCellValueFactory(new PropertyValueFactory<Channel,String>("channelName"));
 
         TableColumn column2 = new TableColumn("Creation date");

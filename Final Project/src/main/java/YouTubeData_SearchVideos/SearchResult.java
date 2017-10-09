@@ -1,6 +1,5 @@
 package YouTubeData_SearchVideos;
 
-import YouTubeData_SearchVideos.Id;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

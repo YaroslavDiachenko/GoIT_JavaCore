@@ -11,7 +11,6 @@ public class Channel {
     private final SimpleIntegerProperty numberOfSubscribers;
     private final SimpleIntegerProperty numberOfVideos;
     private final SimpleIntegerProperty numberOfViews;
-    private final SimpleIntegerProperty numberOfComments;
 
 /*
     public Channel(String channelName, int dateOfCreation,int numberOfSubscribers,int numberOfVideos,int numberOfViews,int numberOfComments) {
@@ -30,7 +29,6 @@ public class Channel {
         this.numberOfSubscribers = new SimpleIntegerProperty(oneChannel.statistics.subscriberCount);
         this.numberOfVideos = new SimpleIntegerProperty(oneChannel.statistics.videoCount);
         this.numberOfViews = new SimpleIntegerProperty(oneChannel.statistics.viewCount);
-        this.numberOfComments = new SimpleIntegerProperty(oneChannel.statistics.commentCount);
     }
 
     public String getChannelName() {
@@ -53,10 +51,6 @@ public class Channel {
         return numberOfViews.get();
     }
 
-    public int getNumberOfComments() {
-        return numberOfComments.get();
-    }
-
     public void setChannelName(String channelName) {
         this.channelName.set(channelName);
     }
@@ -75,10 +69,6 @@ public class Channel {
 
     public void setNumberOfViews(int numberOfViews) {
         this.numberOfViews.set(numberOfViews);
-    }
-
-    public void setNumberOfComments(int numberOfComments) {
-        this.numberOfComments.set(numberOfComments);
     }
 }
 

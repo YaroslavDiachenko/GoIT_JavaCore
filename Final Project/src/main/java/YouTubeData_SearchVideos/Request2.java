@@ -13,7 +13,7 @@ public class Request2 {
                 .queryString("channelId", channelId)
                 .queryString("part", "id")
                 .queryString("fields", "items(id(videoId))")
-                .queryString("maxResults", "50")
+                .queryString("maxResults", "49")
                 .queryString("key", apiKey)
                 .asObject(SearchListResponse.class);
         return response.getBody();

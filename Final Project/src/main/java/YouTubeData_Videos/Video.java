@@ -7,6 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class Video {
-    public Statistics statistics;
+    public YouTubeData_Videos.Statistics statistics;
 
 }

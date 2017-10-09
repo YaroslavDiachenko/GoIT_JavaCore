@@ -37,41 +37,6 @@ public class Main extends Application{
     static RequestManyChannels requestManyChannels = new RequestManyChannels();
     static RequestResultScreen resultScreen = new RequestResultScreen();
 
- // read from file, write to file, convert Json string to object
-    static String readFileToString() {
-     StringBuilder result = new StringBuilder();
-     try (BufferedReader br = new BufferedReader(new FileReader(programSettings.cacheFilePath))) {
-         String line;
-         while ((line = br.readLine()) != null) {
-             result.append(line);
-         }
-         return result.toString();
-     } catch (IOException e) {
-         alert("IOException thrown","Cannot read from file to string.");
-     }
-     return result.toString();
- }
-    static void writeCacheToFile(String jsonString) {
-        try {
-            File file = new File(programSettings.cacheFilePath);
-            FileWriter writer = new FileWriter(file);
-            writer.write(jsonString);
-            writer.flush();
-        } catch (Exception e){
-            alert("Exception thrown","Cache file not found.");
-        }
-    }
-    static OneChannel convertStringToChannel(String jsonString) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ChannelListResponse channelsResponse = null;
-        try {
-            channelsResponse = objectMapper.readValue(jsonString, ChannelListResponse.class);
-        } catch (IOException e) {
-            alert("IOException thrown","Cannot convert a Json string to an object.");
-        }
-        return channelsResponse.items.get(0);
-    }
-
  // opens separate window with error notification
     public static void alert(String title, String message) {
         Stage stage = new Stage();
@@ -134,14 +99,9 @@ public class Main extends Application{
         return answer[0];
     }
 
-
-
  // launches JavaFX application
     @Override
     public void start(Stage primaryStage) throws Exception {
-        writeCacheToFile("");
-
-
         pane.getChildren().add(mainScreen.screen);
         VBox layout = new VBox();
         layout.getChildren().addAll(programMenu.menuBar, pane);

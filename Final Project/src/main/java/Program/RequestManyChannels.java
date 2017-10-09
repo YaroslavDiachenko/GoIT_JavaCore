@@ -1,11 +1,19 @@
 package Program;
 
 
+import YouTubeData_Channels.Request1;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static Program.Main.*;
 
@@ -47,7 +55,7 @@ public class RequestManyChannels extends RequestOneChannel {
         HBox dataInput = new HBox(channelNumbers,channelIdInputFields);
         dataInput.setSpacing(5);
 
-        screen.getChildren().addAll(dataInput,dataInputButtons);
+        screen.getChildren().addAll(dataInput,dataInputButtons,submitButton);
 
         addChannelButton.setOnAction(e1 -> {
             Text channelNumber = new Text("Channel " + ((numberOfInputFields++) + 1) + ":");
@@ -65,6 +73,65 @@ public class RequestManyChannels extends RequestOneChannel {
             }
         });
 
+        submitButton.setOnAction((ActionEvent e) -> {
+            List<String> channelsList = new ArrayList<>();
+            for (Node i : channelIdInputFields.getChildren()) {
+                TextField t = (TextField) i;
+                String s = t.getText();
+                channelsList.add(s);
+            }
+
+            for (String i : channelsList) {
+                if (programSettings.useCache) {
+
+
+                }else {
+
+
+                }
+
+            }
+
+
+/*
+            Channel channel = null;
+            String path = textField1.getText();
+            try {
+                if (programSettings.useCache) {
+                    String readString = readFileToString();
+                    if (readString != null && !"".equals(readString)) {
+                        channel = new Channel(convertStringToChannel(readString));
+                    }else {
+                        String jsonString = Request1.getChannelDataAsString(path);
+                        writeCacheToFile(jsonString);
+                        channel = new Channel(convertStringToChannel(jsonString));
+                    }
+                }else {
+                    channel = new Channel(Request1.getYouTubeChannelAsObject(path));
+                }
+            }catch (UnirestException e2) {
+                alert("Error","Invalid link(s)");
+            }
+            RequestResultScreen.data.clear();
+            RequestResultScreen.data.add(channel);
+            pane.getChildren().clear();
+            pane.getChildren().add(resultScreen.screen);
+*/
+
+        });
+
+
+    }
+
+    String lookForInCache(String fileName) {
+        File directoryFile = new File(programSettings.cacheDirectory);
+        File[] allFiles = directoryFile.listFiles();
+        if (allFiles != null) {
+            for (File file : allFiles) {
+                if (fileName.equals(file.getName())) return file.getPath();
+            }
+        }
+        return null;
     }
 
     void reset() {
