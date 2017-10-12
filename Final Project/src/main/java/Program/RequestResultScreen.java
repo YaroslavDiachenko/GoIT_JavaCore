@@ -7,42 +7,52 @@ import javafx.geometry.Insets;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class RequestResultScreen extends RequestScreen {
 
-    public static final ObservableList<Channel> data = FXCollections.observableArrayList();
+    static final ObservableList<ChannelData> data = FXCollections.observableArrayList();
+    VBox layout;
+
+    TableView<ChannelData> table;
+    TableColumn column1;
+    TableColumn column2;
+    TableColumn column3;
+    TableColumn column4;
+    TableColumn column5;
 
     public RequestResultScreen() {
-        addInterface();
+        layout = new VBox();
+        layout.setSpacing(10);
+
+        Text title = new Text("Table test");
+        table = new TableView<>();
+        addColumns();
+        table.setItems(data);
+        table.getColumns().addAll(column1,column2,column3,column4,column5);
+//        column3.setSortType(TableColumn.SortType.ASCENDING);
+//        table.getSortOrder().clear();
+//        table.getSortOrder().add(column3);
+        layout.setSpacing(5);
+        layout.setPadding(new Insets(10, 0, 0, 10));
+        layout.getChildren().addAll(title,table);
     }
 
-    void addInterface() {
-        Text title = new Text("Table test");
+    void addColumns() {
+        column1 = new TableColumn("ChannelData requestName");
+        column1.setCellValueFactory(new PropertyValueFactory<ChannelData,String>("channelName"));
 
-        TableView<Channel> table = new TableView<>();
-        TableColumn column1 = new TableColumn("Channel name");
-        column1.setCellValueFactory(new PropertyValueFactory<Channel,String>("channelName"));
+        column2 = new TableColumn("Creation date");
+        column2.setCellValueFactory(new PropertyValueFactory<ChannelData,Integer>("dateOfCreation"));
 
-        TableColumn column2 = new TableColumn("Creation date");
-        column2.setCellValueFactory(new PropertyValueFactory<Channel,Integer>("dateOfCreation"));
+        column3 = new TableColumn("Subscribers");
+        column3.setCellValueFactory(new PropertyValueFactory<ChannelData,Integer>("numberOfSubscribers"));
 
-        TableColumn column3 = new TableColumn("Subscribers");
-        column3.setCellValueFactory(new PropertyValueFactory<Channel,Integer>("numberOfSubscribers"));
+        column4 = new TableColumn("Videos");
+        column4.setCellValueFactory(new PropertyValueFactory<ChannelData,Integer>("numberOfVideos"));
 
-        TableColumn column4 = new TableColumn("Videos");
-        column4.setCellValueFactory(new PropertyValueFactory<Channel,Integer>("numberOfVideos"));
-
-        TableColumn column5 = new TableColumn("Views");
-        column5.setCellValueFactory(new PropertyValueFactory<Channel,Integer>("numberOfViews"));
-
-        TableColumn column6 = new TableColumn("Comments");
-        column6.setCellValueFactory(new PropertyValueFactory<Channel,Integer>("numberOfComments"));
-
-        table.setItems(data);
-        table.getColumns().addAll(column1,column2,column3,column4,column5,column6);
-        screen.setSpacing(5);
-        screen.setPadding(new Insets(10, 0, 0, 10));
-        screen.getChildren().addAll(title,table);
+        column5 = new TableColumn("Views");
+        column5.setCellValueFactory(new PropertyValueFactory<ChannelData,Integer>("numberOfViews"));
     }
 }

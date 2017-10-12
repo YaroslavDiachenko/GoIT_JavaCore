@@ -1,9 +1,6 @@
 package Program;
 
 
-import YouTubeData_Channels.ChannelListResponse;
-import YouTubeData_Channels.OneChannel;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,8 +12,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.*;
-
 public class Main extends Application{
 
  // requests names
@@ -27,15 +22,19 @@ public class Main extends Application{
     static String nameRequest5 = "Compare media resonans";
     static String nameRequest6 = "Sort by media resonans";
 
+ // settings parameters:
+    static boolean setting_useCache;
+    static boolean setting_executionTime;
+    static String setting_cacheDirectory;
+
  // program objects
     static Pane pane = new Pane();
-    static MainScreen mainScreen = new MainScreen();
+    static StartScreen startScreen = new StartScreen();
     static ProgramMenu programMenu = new ProgramMenu();
-    static ProgramSettings programSettings = new ProgramSettings();
-    static YouTubeAnalytics youTubeAnalytics = new YouTubeAnalytics();
-    static RequestOneChannel requestOneChannel = new RequestOneChannel();
-    static RequestManyChannels requestManyChannels = new RequestManyChannels();
-    static RequestResultScreen resultScreen = new RequestResultScreen();
+    static SettingsScreen settingsScreen = new SettingsScreen();
+    static MainScreen mainScreen = new MainScreen();
+    static RequestScreen requestScreen = new RequestScreen();
+    static RequestResultScreen requestResultScreen = new RequestResultScreen();
 
  // opens separate window with error notification
     public static void alert(String title, String message) {
@@ -102,10 +101,10 @@ public class Main extends Application{
  // launches JavaFX application
     @Override
     public void start(Stage primaryStage) throws Exception {
-        pane.getChildren().add(mainScreen.screen);
-        VBox layout = new VBox();
-        layout.getChildren().addAll(programMenu.menuBar, pane);
-        Scene scene = new Scene(layout, 600, 400);
+        pane.getChildren().add(startScreen.layout);
+        VBox mainLayout = new VBox();
+        mainLayout.getChildren().addAll(programMenu.menuBar, pane);
+        Scene scene = new Scene(mainLayout, 600, 400);
 
         primaryStage.setTitle("YouTube Analytics");
         primaryStage.setScene(scene);
@@ -114,7 +113,7 @@ public class Main extends Application{
             e.consume();
             boolean answer = confirm("Closing program", "Are you sure you want close the program?");
             if (answer) {
-                programSettings.saveSettings();
+                settingsScreen.saveSettings();
                 primaryStage.close();
             }
         });

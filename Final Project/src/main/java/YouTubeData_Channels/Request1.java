@@ -1,6 +1,7 @@
 package YouTubeData_Channels;
 
 
+import Program.Main;
 import YouTubeData_SearchVideos.Request2;
 import YouTubeData_SearchVideos.SearchListResponse;
 import YouTubeData_SearchVideos.SearchResult;
@@ -33,8 +34,13 @@ public class Request1 {
     static String channelId = "UCJALCpMORvQrlN7dAPLiCWg";
     static String myApiKey = "AIzaSyBifuUatBiNP7C8X2zjMM1BJWinnrES6Ic";
 
-    public static OneChannel getYouTubeChannelAsObject(String channelId) throws UnirestException {
-        ChannelListResponse channelsResponse = requestChannelDataAsObject(channelId);
+    public static Channel getYouTubeChannelAsObject(String channelId) {
+        ChannelListResponse channelsResponse = null;
+        try {
+            channelsResponse = requestChannelDataAsObject(channelId);
+        } catch (UnirestException e) {
+            Main.alert("Error","Cannot get channel(s).");
+        }
         return channelsResponse.items.get(0);
     }
     public static ChannelListResponse getYouTubeChannelResponseAsObject(String channelId) throws UnirestException {
@@ -42,7 +48,7 @@ public class Request1 {
     }
 
     public static String getChannelDataAsString(String channelId) throws UnirestException {
-        System.out.println("Channel data successfully retrieved from server.");
+        System.out.println("ChannelData data successfully retrieved from server.");
         return requestChannelDataAsString(channelId);
     }
 

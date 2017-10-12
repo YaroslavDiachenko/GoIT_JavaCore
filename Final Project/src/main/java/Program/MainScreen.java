@@ -2,36 +2,62 @@ package Program;
 
 
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import static Program.Main.*;
 
 public class MainScreen {
-    VBox screen = new VBox();
+    VBox layout;
 
     public MainScreen() {
-        graphicInterface();
-    }
+        layout = new VBox();
+        layout.setPadding(new Insets(10));
+        layout.setSpacing(10);
 
-    void graphicInterface() {
-        screen.setPadding(new Insets(10));
-        Text hello = new Text("Welcome to YuTube Analytics!");
-        Text version = new Text("YouTube Analytics program v1.0");
-        Hyperlink hyperlinkYouTubeAnalytics = new Hyperlink("YouTube Analytics");
-        hyperlinkYouTubeAnalytics.setFocusTraversable(false);
-        hyperlinkYouTubeAnalytics.setOnAction(event -> {
-            pane.getChildren().clear();
-            pane.getChildren().add(youTubeAnalytics.screen);
+        Button buttonBackMainScreen = new Button("Back to start page");
+        buttonBackMainScreen.setFocusTraversable(false);
+        buttonBackMainScreen.setOnAction(event -> {
+            Main.pane.getChildren().clear();
+            Main.pane.getChildren().add(startScreen.layout);
         });
-        Hyperlink hyperlinkSettings = new Hyperlink("ProgramSettings");
-        hyperlinkSettings.setFocusTraversable(false);
-        hyperlinkSettings.setOnAction(event -> {
-            programSettings.updateSettings();
-            pane.getChildren().clear();
-            pane.getChildren().add(programSettings.screen);
-        });
-        screen.getChildren().addAll(hello, version, hyperlinkYouTubeAnalytics, hyperlinkSettings);
-    }
 
+        Text title = new Text("YouTube Analytics");
+        Text text = new Text("Choose task:");
+
+        Hyperlink hyperlinkRequest1 = new Hyperlink(nameRequest1);
+        Hyperlink hyperlinkRequest2 = new Hyperlink(nameRequest2);
+        Hyperlink hyperlinkRequest3 = new Hyperlink(nameRequest3);
+        Hyperlink hyperlinkRequest4 = new Hyperlink(nameRequest4);
+        Hyperlink hyperlinkRequest5 = new Hyperlink(nameRequest5);
+        Hyperlink hyperlinkRequest6 = new Hyperlink(nameRequest6);
+
+        layout.getChildren().addAll(buttonBackMainScreen,title,text, hyperlinkRequest1, hyperlinkRequest2, hyperlinkRequest3, hyperlinkRequest4, hyperlinkRequest5, hyperlinkRequest6);
+
+        hyperlinkRequest1.setOnAction(event -> {
+            requestScreen.requestNumber = 1;
+            requestScreen.showRequestScreen();
+        });
+        hyperlinkRequest2.setOnAction(event -> {
+            requestScreen.requestNumber = 2;
+            requestScreen.showRequestScreen();
+        });
+        hyperlinkRequest3.setOnAction(event -> {
+            requestScreen.requestNumber = 3;
+            requestScreen.showRequestScreen();
+        });
+        hyperlinkRequest4.setOnAction(event -> {
+            requestScreen.requestNumber = 4;
+            requestScreen.showRequestScreen();
+        });
+        hyperlinkRequest5.setOnAction(event -> {
+            requestScreen.requestNumber = 5;
+            requestScreen.showRequestScreen();
+        });
+        hyperlinkRequest6.setOnAction(event -> {
+            requestScreen.requestNumber = 6;
+            requestScreen.showRequestScreen();
+        });
+    }
 }

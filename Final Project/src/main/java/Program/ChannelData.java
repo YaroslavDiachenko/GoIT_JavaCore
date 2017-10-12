@@ -1,34 +1,23 @@
 package Program;
 
 
-import YouTubeData_Channels.OneChannel;
+import YouTubeData_Channels.Channel;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Channel {
+public class ChannelData {
     private final SimpleStringProperty channelName;
     private final SimpleStringProperty dateOfCreation;
     private final SimpleIntegerProperty numberOfSubscribers;
     private final SimpleIntegerProperty numberOfVideos;
     private final SimpleIntegerProperty numberOfViews;
 
-/*
-    public Channel(String channelName, int dateOfCreation,int numberOfSubscribers,int numberOfVideos,int numberOfViews,int numberOfComments) {
-        this.channelName = new SimpleStringProperty(channelName);
-        this.dateOfCreation = new SimpleIntegerProperty(dateOfCreation);
-        this.numberOfSubscribers = new SimpleIntegerProperty(numberOfSubscribers);
-        this.numberOfVideos = new SimpleIntegerProperty(numberOfVideos);
-        this.numberOfViews = new SimpleIntegerProperty(numberOfViews);
-        this.numberOfComments = new SimpleIntegerProperty(numberOfComments);
-    }
-*/
-
-    public Channel(OneChannel oneChannel) {
-        this.channelName = new SimpleStringProperty(oneChannel.snippet.title);
-        this.dateOfCreation = new SimpleStringProperty(oneChannel.snippet.publishedAt);
-        this.numberOfSubscribers = new SimpleIntegerProperty(oneChannel.statistics.subscriberCount);
-        this.numberOfVideos = new SimpleIntegerProperty(oneChannel.statistics.videoCount);
-        this.numberOfViews = new SimpleIntegerProperty(oneChannel.statistics.viewCount);
+    public ChannelData(Channel channel) {
+        this.channelName = new SimpleStringProperty(channel.snippet.title);
+        this.dateOfCreation = new SimpleStringProperty(channel.snippet.publishedAt);
+        this.numberOfSubscribers = new SimpleIntegerProperty(channel.statistics.subscriberCount);
+        this.numberOfVideos = new SimpleIntegerProperty(channel.statistics.videoCount);
+        this.numberOfViews = new SimpleIntegerProperty(channel.statistics.viewCount);
     }
 
     public String getChannelName() {

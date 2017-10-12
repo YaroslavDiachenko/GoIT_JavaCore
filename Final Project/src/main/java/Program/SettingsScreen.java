@@ -1,6 +1,7 @@
 package Program;
 
 
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -9,9 +10,11 @@ import java.io.*;
 
 import static Program.Main.*;
 
-public class ProgramSettings extends GeneralScreen {
+public class SettingsScreen {
+    VBox layout;
+    private String savedSettingsPath;
 
- // setting ui and control elements:
+    // setting ui and control elements:
     private RadioButton option1_ButtonYes;
     private RadioButton option1_ButtonNo;
     private ToggleGroup option1_ToggleGroup;
@@ -23,22 +26,23 @@ public class ProgramSettings extends GeneralScreen {
     private TitledPane option2;
     private TitledPane option3;
 
- // settings parameters:
-    boolean useCache;
-    boolean showExecutionTime;
-    String savedSettingsPath;
-    String cacheDirectory;
+    public SettingsScreen() {
+        layout = new VBox();
+        layout.setPadding(new Insets(10));
+        layout.setSpacing(10);
 
-    public ProgramSettings() {
+        Button buttonBackMainScreen = new Button("Back to start page");
+        buttonBackMainScreen.setFocusTraversable(false);
+        buttonBackMainScreen.setOnAction(event -> {
+            pane.getChildren().clear();
+            pane.getChildren().add(startScreen.layout);
+        });
+
         savedSettingsPath = "/Users/test/IdeaProjects/GoIT_JavaCore/Final Project/settings.txt";
         downloadSavedSettings();
-        addSettingsInterface();
-    }
-
-    void addSettingsInterface() {
         Text title = new Text("Settings");
 
-     // use cache option
+     // use cache
         Text option1_Title = new Text("Cache using:");
         option1_ToggleGroup = new ToggleGroup();
         option1_ButtonYes = new RadioButton("Yes");
@@ -47,27 +51,27 @@ public class ProgramSettings extends GeneralScreen {
         option1_ButtonNo.setToggleGroup(option1_ToggleGroup);
         Button option1SaveButton = new Button("Save");
         option1SaveButton.setOnAction(e -> {
-            useCache = option1_ButtonYes.isSelected();
-            alert("Use cache", useCache ? "Cache enabled." : "Cache disabled.");
+            setting_useCache = option1_ButtonYes.isSelected();
+            alert("Use cache", setting_useCache ? "Cache enabled." : "Cache disabled.");
         });
         option1 = new TitledPane("Cache using",new VBox(5,option1_Title, option1_ButtonYes, option1_ButtonNo,option1SaveButton));
 
-     // cache saving directory option
+     // cache directory
         Text option2_Title = new Text("Current path to cache folder:");
-        option2_CurrentCacheSavePath = new Text(cacheDirectory);
+        option2_CurrentCacheSavePath = new Text(setting_cacheDirectory);
         Button option2_ClearCacheButton = new Button("Clear cache");
-        option2_ClearCacheButton.setOnAction(e -> cleanFilesInCacheDirectory());
+        option2_ClearCacheButton.setOnAction(e -> cleanCacheDirectory());
         TextField option2_NewCacheSavePath = new TextField();
         option2_NewCacheSavePath.setPromptText("Enter new path...");
         option2_NewCacheSavePath.setFocusTraversable(false);
         Button option2_SaveButton = new Button("Save");
         option2_SaveButton.setOnAction(e -> {
-            cacheDirectory = option2_NewCacheSavePath.getText();
-            option2_CurrentCacheSavePath.setText(cacheDirectory);
+            setting_cacheDirectory = option2_NewCacheSavePath.getText();
+            option2_CurrentCacheSavePath.setText(setting_cacheDirectory);
         });
         option2 = new TitledPane("Cache save path",new VBox(5,option2_Title,option2_CurrentCacheSavePath,option2_ClearCacheButton,option2_NewCacheSavePath,option2_SaveButton));
 
-     // show execution time option
+     // execution time
         Text option3Text = new Text("Show execution time spent?");
         option3_ToggleGroup = new ToggleGroup();
         option3_ButtonYes = new RadioButton("Yes");
@@ -76,53 +80,52 @@ public class ProgramSettings extends GeneralScreen {
         option3_ButtonNo.setToggleGroup(option3_ToggleGroup);
         Button option3SaveButton = new Button("Save");
         option3SaveButton.setOnAction(e -> {
-            showExecutionTime = option3_ButtonYes.isSelected();
-            alert("Execution time spent", useCache ? "Execution time spent enabled." : "Execution time spent disabled.");
+            setting_executionTime = option3_ButtonYes.isSelected();
+            alert("Execution time spent", setting_useCache ? "Execution time spent enabled." : "Execution time spent disabled.");
 
         });
         option3 = new TitledPane("Execution time spent",new VBox(5,option3Text, option3_ButtonYes, option3_ButtonNo,option3SaveButton));
 
-        screen.getChildren().addAll(title, option1, option2,option3);
+        layout.getChildren().addAll(buttonBackMainScreen,title,option1,option2,option3);
     }
 
- // contract title panes and set ui elements according to up-to-date settings parameters values;
+ // contracts title panes and sets ui elements according to up-to-date settings parameters values;
     void updateSettings() {
-        option1_ToggleGroup.selectToggle(useCache ? programSettings.option1_ButtonYes : programSettings.option1_ButtonNo);
-        option3_ToggleGroup.selectToggle(showExecutionTime ? programSettings.option3_ButtonYes : programSettings.option3_ButtonNo);
-        option2_CurrentCacheSavePath.setText(cacheDirectory);
+        option1_ToggleGroup.selectToggle(setting_useCache ? settingsScreen.option1_ButtonYes : settingsScreen.option1_ButtonNo);
+        option3_ToggleGroup.selectToggle(setting_executionTime ? settingsScreen.option3_ButtonYes : settingsScreen.option3_ButtonNo);
+        option2_CurrentCacheSavePath.setText(setting_cacheDirectory);
         option1.setExpanded(false);
         option2.setExpanded(false);
         option3.setExpanded(false);
     }
 
- // download from file settings parameters values (saved on last closing) - applied each time program is opened;
+ // downloads from file settings parameters values saved on last closing (applied each time program is opened);
     void downloadSavedSettings() {
         try (BufferedReader br = new BufferedReader(new FileReader(savedSettingsPath))) {
-            useCache = br.readLine().equals("true");
-            cacheDirectory = br.readLine();
-            showExecutionTime = br.readLine().equals("true");
+            setting_useCache = br.readLine().equals("true");
+            setting_cacheDirectory = br.readLine();
+            setting_executionTime = br.readLine().equals("true");
         } catch (IOException e) {
             alert("IOException thrown","Cannot download from file saved settings.");
         }
     }
 
- // save up-to-date settings parameters values to file - applied each time program is closed;
+ // saves up-to-date settings parameters values to file (applied each time program is closed);
     void saveSettings() {
         try {
             File file = new File(savedSettingsPath);
             FileWriter writer = new FileWriter(file);
-            writer.write((useCache ? "true" : "false") + "\n");
-            writer.write(cacheDirectory + "\n");
-            writer.write(showExecutionTime ? "true" : "false");
+            writer.write((setting_useCache ? "true" : "false") + "\n");
+            writer.write(setting_cacheDirectory + "\n");
+            writer.write(setting_executionTime ? "true" : "false");
             writer.flush();
         } catch (Exception e){
             alert("Exception thrown","Settings file not found.");
         }
     }
 
-    void cleanFilesInCacheDirectory() {
-        File folder = new File(cacheDirectory);
+    void cleanCacheDirectory() {
+        File folder = new File(setting_cacheDirectory);
         for (File file : folder.listFiles()) file.delete();
     }
-
 }

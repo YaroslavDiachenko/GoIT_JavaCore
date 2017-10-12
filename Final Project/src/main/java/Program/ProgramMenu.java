@@ -11,10 +11,6 @@ public class ProgramMenu{
 
     public ProgramMenu() {
         menuBar = new MenuBar();
-        graphicInterface();
-    }
-
-    void graphicInterface() {
         Menu menuFile = new Menu("Go to");
 
             Menu fileMenuAnalytics = new Menu("YouTube Analytics");
@@ -27,41 +23,35 @@ public class ProgramMenu{
             fileMenuAnalytics.getItems().addAll(menuItemRequest1, menuItemRequest2, menuItemRequest3, menuItemRequest4, menuItemRequest5, menuItemRequest6);
 
             menuItemRequest1.setOnAction(event -> {
-                pane.getChildren().clear();
-                requestOneChannel.generateRequest1();
-                pane.getChildren().add(requestOneChannel.screen);
+                requestScreen.requestNumber = 1;
+                requestScreen.showRequestScreen();
             });
             menuItemRequest2.setOnAction(event -> {
-                pane.getChildren().clear();
-                requestManyChannels.generateRequest2();
-                pane.getChildren().add(requestManyChannels.screen);
+                requestScreen.requestNumber = 2;
+                requestScreen.showRequestScreen();
             });
             menuItemRequest3.setOnAction(event -> {
-                pane.getChildren().clear();
-                requestManyChannels.generateRequest3();
-                pane.getChildren().add(requestManyChannels.screen);
+                requestScreen.requestNumber = 3;
+                requestScreen.showRequestScreen();
             });
             menuItemRequest4.setOnAction(event -> {
-                pane.getChildren().clear();
-                requestOneChannel.generateRequest4();
-                pane.getChildren().add(requestOneChannel.screen);
+                requestScreen.requestNumber = 4;
+                requestScreen.showRequestScreen();
             });
             menuItemRequest5.setOnAction(event -> {
-                pane.getChildren().clear();
-                requestManyChannels.generateRequest5();
-                pane.getChildren().add(requestManyChannels.screen);
+                requestScreen.requestNumber = 5;
+                requestScreen.showRequestScreen();
             });
             menuItemRequest6.setOnAction(event -> {
-                pane.getChildren().clear();
-                requestManyChannels.generateRequest6();
-                pane.getChildren().add(requestManyChannels.screen);
+                requestScreen.requestNumber = 6;
+                requestScreen.showRequestScreen();
             });
 
             MenuItem fileMenuSettings = new MenuItem("Settings");
             fileMenuSettings.setOnAction(event -> {
-                programSettings.updateSettings();
+                settingsScreen.updateSettings();
                 pane.getChildren().clear();
-                pane.getChildren().add(programSettings.screen);
+                pane.getChildren().add(settingsScreen.layout);
             });
             menuFile.getItems().addAll(fileMenuAnalytics,fileMenuSettings);
 

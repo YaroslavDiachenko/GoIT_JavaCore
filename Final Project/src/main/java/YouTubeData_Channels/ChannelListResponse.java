@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class ChannelListResponse {
-    public List<OneChannel> items;
+    public List<Channel> items;
 
 /*
     public void show() {
