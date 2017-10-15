@@ -12,10 +12,9 @@ public class Main extends Application{
         primaryStage.setHeight(500);
         primaryStage.setTitle("Pentagram");
         Pentagram pentagram = new Pentagram();
-        SnowmanScene snowmanScene = new SnowmanScene(primaryStage);
-//        Scene scene = new Scene();
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
+        Scene scene = new Scene(pentagram.programLayout);
+        primaryStage.setScene(scene);
+        primaryStage.show();
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
             boolean answer = pentagram.confirm("Closing program", "Are you sure you want close the program?");
