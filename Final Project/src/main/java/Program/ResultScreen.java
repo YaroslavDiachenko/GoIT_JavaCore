@@ -78,10 +78,12 @@ public class ResultScreen {
                     column5.setSortType(type.equals("in ascending order") ? TableColumn.SortType.ASCENDING : TableColumn.SortType.DESCENDING);
                     break;
             }
+            table.sort();
         }
         if (requestType == 6) {
             table.getSortOrder().add(column6);
             column6.setSortType(TableColumn.SortType.ASCENDING);
+            table.sort();
         }
     }
 

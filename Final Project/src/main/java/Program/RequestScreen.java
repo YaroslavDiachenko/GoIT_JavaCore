@@ -90,6 +90,7 @@ public class RequestScreen {
 
         simpleInput_submit.setOnAction((ActionEvent e) -> {
             long start = System.currentTimeMillis();
+            adjustTable();
             ResultScreen.data.clear();
             resultScreen.setSorting(requestType);
             String channelId = simpleInput_field.getValue().toString();
@@ -163,6 +164,7 @@ public class RequestScreen {
         });
         multiInput_submit.setOnAction(event -> {
             long start = System.currentTimeMillis();
+            adjustTable();
             ResultScreen.data.clear();
             resultScreen.setSorting(requestType);
             List<String> channelIDsList = new ArrayList<>();
@@ -269,13 +271,16 @@ public class RequestScreen {
 
     void showOutputInterface() {
         inputAndOutputArea.getChildren().clear();
+        inputAndOutputArea.getChildren().add(resultScreen.layout);
+    }
+
+    void adjustTable() {
         if (requestType > 3) {
             if (!resultScreen.table.getColumns().contains(resultScreen.column6)) resultScreen.table.getColumns().add(resultScreen.column6);
         }
         else {
             if (resultScreen.table.getColumns().contains(resultScreen.column6)) resultScreen.table.getColumns().remove(resultScreen.column6);
         }
-        inputAndOutputArea.getChildren().add(resultScreen.layout);
     }
 
     ChannelData getChannelData(String channelId) {
@@ -292,6 +297,7 @@ public class RequestScreen {
                     // COMMENTS NOT CACHED
                     else {
                         channelData.setNumberOfComments(getCommentsFromServer(channelId));
+                        writeCacheToFile(channelData);
                     }
                 }
                 return channelData;
@@ -308,6 +314,7 @@ public class RequestScreen {
                     return channelData;
                 } else alert("Error", "No channel returned.");
             }
+
         // CACHE OFF:
         } else {
             Channel channel = getChannelFromServer(channelId);
