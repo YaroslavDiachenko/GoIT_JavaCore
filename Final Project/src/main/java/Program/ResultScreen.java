@@ -81,7 +81,7 @@ public class ResultScreen {
         }
         if (requestType == 6) {
             table.getSortOrder().add(column6);
-            column3.setSortType(TableColumn.SortType.ASCENDING);
+            column6.setSortType(TableColumn.SortType.ASCENDING);
         }
     }
 
