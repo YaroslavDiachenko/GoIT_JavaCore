@@ -18,7 +18,6 @@ public class Request3 {
                 .asObject(VideoListResponse.class);
         return response.getBody();
     }
-/*
 
     public static String requestVideoDataAsString(String videosList, String apiKey) throws UnirestException {
         Request1.initApplication();
@@ -30,5 +29,4 @@ public class Request3 {
                 .asString();
         return response.getBody();
     }
-*/
 }

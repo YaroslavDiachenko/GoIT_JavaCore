@@ -2,15 +2,14 @@ package Program;
 
 
 import YouTubeData_Channels.Channel;
-import YouTubeData_Channels.ChannelListResponse;
-import YouTubeData_Channels.Request1;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -18,23 +17,40 @@ import javafx.scene.text.Text;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static Program.Main.*;
+import static YouTubeData_Channels.Request1.getChannelFromServer;
+import static YouTubeData_SearchVideos.Request2.getCommentsFromServer;
 
 public class RequestScreen {
+
     VBox layout;
 
-    int requestNumber;
+    int requestType;
     int numberOfInputFields;
 
     Text requestName;
     Text requestDescription;
     Pane inputAndOutputArea;
 
-    VBox inputInterface_oneChannel;
-    VBox inputInterface_manyChannels;
-    VBox inputInterface_manyChannelsAndSort;
+    VBox simpleInput_interface;
+    VBox multiInput_interface;
+
+    ComboBox simpleInput_field;
+
+    VBox multiInput_labels;
+    VBox multiInput_fields;
+    Text multiInput_label1;
+    Text multiInput_label2;
+    ComboBox multiInput_field1;
+    ComboBox multiInput_field2;
+    Button multiInput_submit;
+
+    ChoiceBox multiInput_sortColumn;
+    ChoiceBox multiInput_sortType;
+    HBox multiInput_sorting;
 
     public RequestScreen() {
         layout = new VBox();
@@ -42,7 +58,7 @@ public class RequestScreen {
         layout.setSpacing(10);
 
         Button buttonBackAnalyticsScreen = new Button();
-        buttonBackAnalyticsScreen.setText("Back to YouTube Analytics");
+        buttonBackAnalyticsScreen.setText("Back to main page");
         buttonBackAnalyticsScreen.setFocusTraversable(false);
         buttonBackAnalyticsScreen.setOnAction(event -> {
             Main.pane.getChildren().clear();
@@ -54,10 +70,8 @@ public class RequestScreen {
 
         inputAndOutputArea = new Pane();
 
-        addInputInterface_OneChannel();
-        addInputInterface_ManyChannels();
-        addInputInterface_ManyChannelsAndSort();
-
+        createSimpleInputInterface();
+        createMultiInputInterface();
 
         layout.getChildren().addAll(buttonBackAnalyticsScreen,requestName,requestDescription, inputAndOutputArea);
 
@@ -66,106 +80,139 @@ public class RequestScreen {
 
     }
 
-    void addInputInterface_OneChannel() {
-        inputInterface_oneChannel = new VBox();
-        inputInterface_oneChannel.setPadding(new Insets(10));
-        inputInterface_oneChannel.setSpacing(10);
+    void createSimpleInputInterface() {
+        simpleInput_interface = new VBox();
+        simpleInput_interface.setPadding(new Insets(10));
+        simpleInput_interface.setSpacing(10);
+        simpleInput_field = createComboBox();
+        Button simpleInput_submit = new Button("Submit");
+        simpleInput_interface.getChildren().addAll(simpleInput_field, simpleInput_submit);
 
-        TextField textField1 = new TextField();
-        textField1.setFocusTraversable(false);
-        textField1.setPromptText("Enter YouTube channel ID:");
-        Button submitButton = new Button("Submit");
-        inputInterface_oneChannel.getChildren().addAll(textField1, submitButton);
-
-        submitButton.setOnAction((ActionEvent e) -> {
-            RequestResultScreen.data.clear();
-            String channelId = textField1.getText();
-            ChannelData channel = getChannelData(channelId);
-            RequestResultScreen.data.add(channel);
-            showOutputInterface(requestNumber);
+        simpleInput_submit.setOnAction((ActionEvent e) -> {
+            ResultScreen.data.clear();
+            String channelId = simpleInput_field.getValue().toString();
+            if (channelId != null && !"".equals(channelId.trim())) {
+                if (settingsScreen.historyList.contains(channelId)) channelId = settingsScreen.historyMap.get(channelId);
+                ChannelData channelData = getChannelData(channelId);
+                if (channelData != null) {
+                    ResultScreen.data.add(channelData);
+                    showOutputInterface();
+                    if (!settingsScreen.historyList.contains(channelData.getChannelName())) {
+                        settingsScreen.historyList.add(channelData.getChannelName());
+                        settingsScreen.historyMap.put(channelData.getChannelName(), channelData.getChannelId());
+                    }
+                }else alert("Invalid data","Channel not found.");
+            }else alert("Incomplete input","Please fill input field.");
         });
     }
 
-    void addInputInterface_ManyChannels() {
-        inputInterface_manyChannels = new VBox();
-        inputInterface_manyChannels.setPadding(new Insets(10));
-        inputInterface_manyChannels.setSpacing(10);
+    void createMultiInputInterface() {
+        multiInput_interface = new VBox();
+        multiInput_interface.setPadding(new Insets(10));
+        multiInput_interface.setSpacing(10);
 
-        Text text1 = new Text("Channel 1:");
-        Text text2 = new Text("Channel 2:");
-        VBox channelNumbers = new VBox(text1,text2);
-        channelNumbers.setTranslateY(5);
-        channelNumbers.setSpacing(16);
+        multiInput_label1 = new Text("Channel 1:");
+        multiInput_label2 = new Text("Channel 2:");
+        multiInput_labels = new VBox(multiInput_label1, multiInput_label2);
+        multiInput_labels.setTranslateY(5);
+        multiInput_labels.setSpacing(16);
 
-        TextField textField1_1 = new TextField();
-        textField1_1.setPromptText("Enter channel ID..");
-        textField1_1.setFocusTraversable(false);
-        TextField textField2_2 = new TextField();
-        textField2_2.setPromptText("Enter channel ID..");
-        textField2_2.setFocusTraversable(false);
-        VBox channelIdInputFields = new VBox(textField1_1,textField2_2);
-        channelIdInputFields.setSpacing(5);
+        multiInput_field1 = createComboBox();
+        multiInput_field2 = createComboBox();
+        multiInput_fields = new VBox(multiInput_field1,multiInput_field2);
+        multiInput_fields.setSpacing(5);
         numberOfInputFields = 2;
 
-        Button addChannelButton = new Button("Add field");
-        Button removeChannelButton = new Button("Remove field");
+        Button addInputField = new Button("Add field");
+        Button removeInputField = new Button("Remove field");
 
-        HBox dataInputButtons = new HBox(15,addChannelButton,removeChannelButton);
-        Button submitButton = new Button("Submit");
+        HBox dataInputExtendButtons = new HBox(15,addInputField,removeInputField);
+        multiInput_submit = new Button("Submit");
 
-        HBox dataInput = new HBox(channelNumbers,channelIdInputFields,submitButton);
+        HBox dataInput = new HBox(multiInput_labels, multiInput_fields);
         dataInput.setSpacing(5);
 
-        inputInterface_manyChannels.getChildren().addAll(dataInput,dataInputButtons,submitButton);
+        Text multiInput_text = new Text("Sort:");
+        multiInput_sortColumn = new ChoiceBox(FXCollections.observableArrayList(new ArrayList<>(Arrays.asList("by channel name","by creation date","by number of subscribers","by number of videos","by number of views"))));
+        multiInput_sortType = new ChoiceBox(FXCollections.observableArrayList(new ArrayList<>(Arrays.asList("in ascending order","in descending order"))));
+        multiInput_sortColumn.getSelectionModel().selectFirst();
+        multiInput_sortType.getSelectionModel().selectFirst();
+        multiInput_sorting = new HBox(5, multiInput_text,multiInput_sortColumn,multiInput_sortType);
+        multiInput_sorting.setAlignment(Pos.CENTER);
 
-        addChannelButton.setOnAction(event -> {
-            Text channelNumber = new Text("Channel " + ((numberOfInputFields++) + 1) + ":");
-            channelNumbers.getChildren().add(channelNumber);
-            TextField channelIdInput = new TextField();
-            channelIdInput.setPromptText("Enter channel ID..");
-            channelIdInputFields.getChildren().add(channelIdInput);
+
+        multiInput_interface.getChildren().addAll(dataInput,dataInputExtendButtons,multiInput_submit);
+
+        addInputField.setOnAction(event -> {
+            Text multiInput_addLabel = new Text("Channel " + ((numberOfInputFields++) + 1) + ":");
+            multiInput_labels.getChildren().add(multiInput_addLabel);
+            ComboBox multiInput_addField = createComboBox();
+            multiInput_fields.getChildren().add(multiInput_addField);
         });
-        removeChannelButton.setOnAction(event -> {
+        removeInputField.setOnAction(event -> {
             if (numberOfInputFields > 2) {
-                channelNumbers.getChildren().remove(numberOfInputFields-1);
-                channelIdInputFields.getChildren().remove(numberOfInputFields-1);
+                multiInput_labels.getChildren().remove(numberOfInputFields-1);
+                multiInput_fields.getChildren().remove(numberOfInputFields-1);
                 numberOfInputFields--;
             }
         });
-        submitButton.setOnAction(event -> {
-            RequestResultScreen.data.clear();
+        multiInput_submit.setOnAction(event -> {
+            ResultScreen.data.clear();
+            resultScreen.setSorting(requestType);
             List<String> channelIDsList = new ArrayList<>();
-            for (Node i : channelIdInputFields.getChildren()) {
-                TextField t = (TextField) i;
-                String s = t.getText();
-                if (s != null && !"".equals(s.trim())) channelIDsList.add(s);
+            for (Node i : multiInput_fields.getChildren()) {
+                String s = ((ComboBox)i).getValue().toString();
+                if (s != null && !"".equals(s.trim())) {
+                    if (settingsScreen.historyList.contains(s)) s = settingsScreen.historyMap.get(s);
+                    if (!channelIDsList.contains(s)) channelIDsList.add(s);
+                }
             }
 
             if (channelIDsList.size() >= 2) {
                 for (String i : channelIDsList) {
                     ChannelData channelData = getChannelData(i);
-                    if (channelData != null) RequestResultScreen.data.add(channelData);
+                    if (channelData != null) {
+                        ResultScreen.data.add(channelData);
+                        if (!settingsScreen.historyList.contains(channelData.getChannelName())) {
+                            settingsScreen.historyList.add(channelData.getChannelName());
+                            settingsScreen.historyMap.put(channelData.getChannelName(), channelData.getChannelId());
+                        }
+                    }
                 }
-                if (RequestResultScreen.data.size() > 0) {
-                    showOutputInterface(requestNumber);
-                    channelNumbers.getChildren().clear();
-                    channelIdInputFields.getChildren().clear();
-                    textField1_1.clear();
-                    textField2_2.clear();
-                    channelNumbers.getChildren().addAll(text1,text2);
-                    channelIdInputFields.getChildren().addAll(textField1_1, textField2_2);
-                    numberOfInputFields = 2;
+                if (ResultScreen.data.size() > 0) {
+                    resultScreen.table.sort();
+                    showOutputInterface();
                 }else alert("Invalid data","No channels found.");
-            }else alert("Incomplete input","Please add at least two channel IDs.");
+            }else alert("Incomplete input","Please add at least two different channels.");
         });
     }
 
-    void addInputInterface_ManyChannelsAndSort() {
-        inputInterface_manyChannelsAndSort = new VBox();
+    ComboBox createComboBox() {
+        ComboBox comboBox = new ComboBox();
+        comboBox.setFocusTraversable(false);
+        comboBox.setEditable(true);
+        comboBox.setMinWidth(100);
+        comboBox.setPromptText("Enter channel ID:");
+        comboBox.setItems(settingsScreen.historyList);
+        return comboBox;
+    }
 
+    void resetInputInterface() {
+        if (requestType == 1 || requestType == 4) {
+            simpleInput_field.getEditor().clear();
+        } else {
+            multiInput_labels.getChildren().clear();
+            multiInput_fields.getChildren().clear();
+            multiInput_field1.getEditor().clear();
+            multiInput_field2.getEditor().clear();
+            multiInput_labels.getChildren().addAll(multiInput_label1, multiInput_label2);
+            multiInput_fields.getChildren().addAll(multiInput_field1, multiInput_field2);
+            numberOfInputFields = 2;
+        }
     }
 
     void showRequestScreen() {
+        resetInputInterface();
         showInputInterface();
         pane.getChildren().clear();
         pane.getChildren().add(layout);
@@ -173,80 +220,133 @@ public class RequestScreen {
 
     void showInputInterface() {
         inputAndOutputArea.getChildren().clear();
-        switch (requestNumber) {
+        switch (requestType) {
             case 1:
                 requestName.setText(nameRequest1);
                 requestDescription.setText("Shows global information about a channel.");
-                inputAndOutputArea.getChildren().add(inputInterface_oneChannel);
+                inputAndOutputArea.getChildren().add(simpleInput_interface);
                 break;
             case 2:
                 requestName.setText(nameRequest2);
                 requestDescription.setText("Shows global information about the list of specified channels.");
-                inputAndOutputArea.getChildren().add(inputInterface_manyChannels);
+                if (multiInput_interface.getChildren().contains(multiInput_sorting)) multiInput_interface.getChildren().remove(multiInput_sorting);
+                inputAndOutputArea.getChildren().add(multiInput_interface);
                 break;
             case 3:
                 requestName.setText(nameRequest3);
                 requestDescription.setText("Sorts the list of specified channels and their information by specified parameter.");
-                inputAndOutputArea.getChildren().add(inputInterface_manyChannelsAndSort);
+                if (!multiInput_interface.getChildren().contains(multiInput_sorting)) multiInput_interface.getChildren().add(2,multiInput_sorting);
+                inputAndOutputArea.getChildren().add(multiInput_interface);
                 break;
             case 4:
                 requestName.setText(nameRequest4);
                 requestDescription.setText("Shows information (including total number of comments) about a channel.");
-                inputAndOutputArea.getChildren().add(inputInterface_oneChannel);
+                inputAndOutputArea.getChildren().add(simpleInput_interface);
                 break;
             case 5:
                 requestName.setText(nameRequest5);
                 requestDescription.setText("Shows information (including total number of comments) about the list of specified channels.");
-                inputAndOutputArea.getChildren().add(inputInterface_manyChannels);
+                if (multiInput_interface.getChildren().contains(multiInput_sorting)) multiInput_interface.getChildren().remove(multiInput_sorting);
+                inputAndOutputArea.getChildren().add(multiInput_interface);
                 break;
             case 6:
                 requestName.setText(nameRequest6);
                 requestDescription.setText("Sorts the list of specified channels and their information by total number of comments.");
-                inputAndOutputArea.getChildren().add(inputInterface_manyChannels);
+                if (multiInput_interface.getChildren().contains(multiInput_sorting)) multiInput_interface.getChildren().remove(multiInput_sorting);
+                inputAndOutputArea.getChildren().add(multiInput_interface);
                 break;
         }
     }
 
-    void showOutputInterface(int requestNumber) {
+    void showOutputInterface() {
         inputAndOutputArea.getChildren().clear();
-        inputAndOutputArea.getChildren().add(requestResultScreen.layout);
+        if (requestType > 3) {
+            if (!resultScreen.table.getColumns().contains(resultScreen.column6)) resultScreen.table.getColumns().add(resultScreen.column6);
+        }
+        else {
+            if (resultScreen.table.getColumns().contains(resultScreen.column6)) resultScreen.table.getColumns().remove(resultScreen.column6);
+        }
+        inputAndOutputArea.getChildren().add(resultScreen.layout);
     }
 
     ChannelData getChannelData(String channelId) {
         System.out.println("\nPASSED FOR EXECUTION: ChannelID: " + channelId);
-        try {
-            if (setting_useCache) {
-                System.out.println("Use cache option was checked and is 'true'.");
-                if (checkIfCached(channelId)) {
-                    System.out.println("ChannelData was checked if cached and is 'true'.");
-                    System.out.println("ChannelData was converted from read cached data.");
-                    return new ChannelData(convertStringToChannel(readFileToString(channelId)));
-                }else {
-                    System.out.println("ChannelData was checked if cached and is 'false'.");
-                    String jsonString = Request1.getChannelDataAsString(channelId);
-                    System.out.println("ChannelData data was requested from server and converted to Json string.");
-                    writeCacheToFile(jsonString,channelId);
-                    Channel channel = convertStringToChannel(jsonString);
-                    if (channel != null) return new ChannelData(channel);
-                    return null;
+        // CACHE ON:
+        if (setting_useCache) {
+            System.out.println("Use cache option => TRUE.");
+
+            // CHANNEL CACHED:
+            if (checkIfCached(channelId)) {
+                System.out.println("Channel is cached => TRUE.");
+                List<String> cachedData = getFromCacheChannelData(channelId);
+                ChannelData channelData = createObjectFromCache(cachedData);
+
+                // Adding comments if needed:
+                if (requestType > 3) {
+                    // COMMENTS CACHED
+                    if (cachedData.size() > 6) channelData.setNumberOfComments(Integer.parseInt(cachedData.get(6)));
+                    // COMMENTS NOT CACHED
+                    else {
+                        channelData.setNumberOfComments(getCommentsFromServer(channelId));
+                        System.out.println("Comments retrieved from server.");
+                    }
                 }
-            }else {
-                return new ChannelData(Request1.getYouTubeChannelAsObject(channelId));
+                return channelData;
+
+            // CHANNEL NOT CACHED:
+            } else {
+                System.out.println("Channel is cached => FALSE.");
+                System.out.println("Request sent to server.");
+                Channel channel = getChannelFromServer(channelId);
+                if (channel != null) {
+                    System.out.println("Requested data retrieved from server.");
+                    ChannelData channelData = new ChannelData(channel);
+                    if (requestType > 3) {
+                        channelData.setNumberOfComments(getCommentsFromServer(channelId));
+                        System.out.println("Comments retrieved from server.");
+                    }
+                    writeCacheToFile(channelData);
+                    System.out.println("Channel data saved to cache.");
+                    return channelData;
+                } else alert("Error", "No channel returned.");
             }
-        }catch (UnirestException e) {
-            alert("UnirestException thrown","Cannot get channel.");
+
+        // CACHE OFF:
+        } else {
+            System.out.println("Use cache option => FALSE.");
+            System.out.println("Request sent to server.");
+            Channel channel = getChannelFromServer(channelId);
+            if (channel != null) {
+                System.out.println("Requested data retrieved from server.");
+                ChannelData channelData = new ChannelData(channel);
+                if (requestType > 3) {
+                    channelData.setNumberOfComments(getCommentsFromServer(channelId));
+                    System.out.println("Comments retrieved from server.");
+                }
+                return channelData;
+            }
         }
         return null;
     }
 
-    void writeCacheToFile(String jsonString, String channelId) {
+    ChannelData createObjectFromCache(List<String> data) {
+        return new ChannelData(data.get(0),data.get(1),data.get(2),
+                Integer.parseInt(data.get(3)),Integer.parseInt(data.get(4)),Integer.parseInt(data.get(5)));
+    }
+
+    void writeCacheToFile(ChannelData channelData) {
         try {
-            String savePath = setting_cacheDirectory + channelId + ".txt";
+            String savePath = setting_cacheDirectory + channelData.getChannelId() + ".txt";
             File file = new File(savePath);
             FileWriter writer = new FileWriter(file);
-            writer.write(jsonString);
+            writer.write(channelData.getChannelId() + "\n");
+            writer.write(channelData.getChannelName() + "\n");
+            writer.write(channelData.getDateOfCreation() + "\n");
+            writer.write(channelData.getNumberOfSubscribers() + "\n");
+            writer.write(channelData.getNumberOfVideos() + "\n");
+            writer.write(channelData.getNumberOfViews() + "");
+            if (channelData.getNumberOfComments() > 0) writer.write("\n" + channelData.getNumberOfComments() + "");
             writer.flush();
-            System.out.println("ChannelData has been successfully cached.");
         } catch (Exception e){
             alert("Exception thrown","ChannelData not cashed.");
         }
@@ -264,30 +364,17 @@ public class RequestScreen {
         return false;
     }
 
-    static String readFileToString(String channelName) {
-        String cachedChannelPath = (setting_cacheDirectory + "/" + channelName + ".txt");
-        StringBuilder result = new StringBuilder();
+    List<String> getFromCacheChannelData(String channelId) {
+        String cachedChannelPath = (setting_cacheDirectory + "/" + channelId + ".txt");
+        List<String> list = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(cachedChannelPath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                result.append(line);
+                list.add(line);
             }
-            return result.toString();
-        } catch (IOException e) {
+            return list;
+        }catch (IOException e) {
             alert("IOException thrown","Cannot read cached file.");
-        }
-        return result.toString();
-    }
-
-    Channel convertStringToChannel(String jsonString) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            ChannelListResponse channelsResponse = objectMapper.readValue(jsonString, ChannelListResponse.class);
-            return channelsResponse.items.get(0);
-        }catch (IOException e){
-            alert("IOException thrown","Cannot convert a Json string to an object.");
-        }catch (IndexOutOfBoundsException | NullPointerException e) {
-            alert("IndexOutOfBoundsException thrown","Channel(s) not found.");
         }
         return null;
     }

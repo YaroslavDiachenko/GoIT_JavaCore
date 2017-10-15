@@ -34,7 +34,7 @@ public class Main extends Application{
     static SettingsScreen settingsScreen = new SettingsScreen();
     static MainScreen mainScreen = new MainScreen();
     static RequestScreen requestScreen = new RequestScreen();
-    static RequestResultScreen requestResultScreen = new RequestResultScreen();
+    static ResultScreen resultScreen = new ResultScreen();
 
  // opens separate window with error notification
     public static void alert(String title, String message) {
@@ -104,7 +104,7 @@ public class Main extends Application{
         pane.getChildren().add(startScreen.layout);
         VBox mainLayout = new VBox();
         mainLayout.getChildren().addAll(programMenu.menuBar, pane);
-        Scene scene = new Scene(mainLayout, 600, 400);
+        Scene scene = new Scene(mainLayout, 700, 400);
 
         primaryStage.setTitle("YouTube Analytics");
         primaryStage.setScene(scene);

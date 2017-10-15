@@ -1,18 +1,25 @@
 package Program;
 
 
+import com.sun.javafx.collections.ObservableListWrapper;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static Program.Main.*;
 
 public class SettingsScreen {
     VBox layout;
     private String savedSettingsPath;
+    Map<String,String> historyMap;
+    ObservableList<String> historyList;
 
     // setting ui and control elements:
     private RadioButton option1_ButtonYes;
@@ -38,7 +45,7 @@ public class SettingsScreen {
             pane.getChildren().add(startScreen.layout);
         });
 
-        savedSettingsPath = "/Users/test/IdeaProjects/GoIT_JavaCore/Final Project/settings.txt";
+        savedSettingsPath = "settings.txt";
         downloadSavedSettings();
         Text title = new Text("Settings");
 
@@ -72,7 +79,7 @@ public class SettingsScreen {
         option2 = new TitledPane("Cache save path",new VBox(5,option2_Title,option2_CurrentCacheSavePath,option2_ClearCacheButton,option2_NewCacheSavePath,option2_SaveButton));
 
      // execution time
-        Text option3Text = new Text("Show execution time spent?");
+        Text option3Text = new Text("Show execution time spent? (ne uspel dodelat')");
         option3_ToggleGroup = new ToggleGroup();
         option3_ButtonYes = new RadioButton("Yes");
         option3_ButtonYes.setToggleGroup(option3_ToggleGroup);
@@ -87,6 +94,8 @@ public class SettingsScreen {
         option3 = new TitledPane("Execution time spent",new VBox(5,option3Text, option3_ButtonYes, option3_ButtonNo,option3SaveButton));
 
         layout.getChildren().addAll(buttonBackMainScreen,title,option1,option2,option3);
+
+        updateHistoryList();
     }
 
  // contracts title panes and sets ui elements according to up-to-date settings parameters values;
@@ -127,5 +136,25 @@ public class SettingsScreen {
     void cleanCacheDirectory() {
         File folder = new File(setting_cacheDirectory);
         for (File file : folder.listFiles()) file.delete();
+    }
+
+    void updateHistoryList() {
+        historyMap = new HashMap<>();
+        File cashDirectoryFile = new File(setting_cacheDirectory);
+        File[] allFiles = cashDirectoryFile.listFiles();
+        if (allFiles != null) {
+            for (File file : allFiles) {
+                if (!file.isDirectory()) {
+                    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                        String id = br.readLine();
+                        String name = br.readLine();
+                        historyMap.put(name,id);
+                    } catch (IOException e) {
+                        alert("IOException thrown","Cannot read cache while updating history list");
+                    }
+                }
+            }
+        }
+        historyList = new ObservableListWrapper<>(new ArrayList<>(historyMap.keySet()));
     }
 }

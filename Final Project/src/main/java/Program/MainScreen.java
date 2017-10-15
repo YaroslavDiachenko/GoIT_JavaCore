@@ -36,27 +36,27 @@ public class MainScreen {
         layout.getChildren().addAll(buttonBackMainScreen,title,text, hyperlinkRequest1, hyperlinkRequest2, hyperlinkRequest3, hyperlinkRequest4, hyperlinkRequest5, hyperlinkRequest6);
 
         hyperlinkRequest1.setOnAction(event -> {
-            requestScreen.requestNumber = 1;
+            requestScreen.requestType = 1;
             requestScreen.showRequestScreen();
         });
         hyperlinkRequest2.setOnAction(event -> {
-            requestScreen.requestNumber = 2;
+            requestScreen.requestType = 2;
             requestScreen.showRequestScreen();
         });
         hyperlinkRequest3.setOnAction(event -> {
-            requestScreen.requestNumber = 3;
+            requestScreen.requestType = 3;
             requestScreen.showRequestScreen();
         });
         hyperlinkRequest4.setOnAction(event -> {
-            requestScreen.requestNumber = 4;
+            requestScreen.requestType = 4;
             requestScreen.showRequestScreen();
         });
         hyperlinkRequest5.setOnAction(event -> {
-            requestScreen.requestNumber = 5;
+            requestScreen.requestType = 5;
             requestScreen.showRequestScreen();
         });
         hyperlinkRequest6.setOnAction(event -> {
-            requestScreen.requestNumber = 6;
+            requestScreen.requestType = 6;
             requestScreen.showRequestScreen();
         });
     }

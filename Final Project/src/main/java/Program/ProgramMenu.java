@@ -23,27 +23,27 @@ public class ProgramMenu{
             fileMenuAnalytics.getItems().addAll(menuItemRequest1, menuItemRequest2, menuItemRequest3, menuItemRequest4, menuItemRequest5, menuItemRequest6);
 
             menuItemRequest1.setOnAction(event -> {
-                requestScreen.requestNumber = 1;
+                requestScreen.requestType = 1;
                 requestScreen.showRequestScreen();
             });
             menuItemRequest2.setOnAction(event -> {
-                requestScreen.requestNumber = 2;
+                requestScreen.requestType = 2;
                 requestScreen.showRequestScreen();
             });
             menuItemRequest3.setOnAction(event -> {
-                requestScreen.requestNumber = 3;
+                requestScreen.requestType = 3;
                 requestScreen.showRequestScreen();
             });
             menuItemRequest4.setOnAction(event -> {
-                requestScreen.requestNumber = 4;
+                requestScreen.requestType = 4;
                 requestScreen.showRequestScreen();
             });
             menuItemRequest5.setOnAction(event -> {
-                requestScreen.requestNumber = 5;
+                requestScreen.requestType = 5;
                 requestScreen.showRequestScreen();
             });
             menuItemRequest6.setOnAction(event -> {
-                requestScreen.requestNumber = 6;
+                requestScreen.requestType = 6;
                 requestScreen.showRequestScreen();
             });
 
