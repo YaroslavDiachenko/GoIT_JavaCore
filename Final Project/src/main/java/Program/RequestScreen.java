@@ -89,7 +89,9 @@ public class RequestScreen {
         simpleInput_interface.getChildren().addAll(simpleInput_field, simpleInput_submit);
 
         simpleInput_submit.setOnAction((ActionEvent e) -> {
+            long start = System.currentTimeMillis();
             ResultScreen.data.clear();
+            resultScreen.setSorting(requestType);
             String channelId = simpleInput_field.getValue().toString();
             if (channelId != null && !"".equals(channelId.trim())) {
                 if (settingsScreen.historyList.contains(channelId)) channelId = settingsScreen.historyMap.get(channelId);
@@ -101,6 +103,9 @@ public class RequestScreen {
                         settingsScreen.historyList.add(channelData.getChannelName());
                         settingsScreen.historyMap.put(channelData.getChannelName(), channelData.getChannelId());
                     }
+                    long end = System.currentTimeMillis();
+                    if (setting_executionTime) resultScreen.timer.setText("Executed in: " + (int)(end - start) + "ms");
+                    else resultScreen.timer.setText("");
                 }else alert("Invalid data","Channel not found.");
             }else alert("Incomplete input","Please fill input field.");
         });
@@ -157,6 +162,7 @@ public class RequestScreen {
             }
         });
         multiInput_submit.setOnAction(event -> {
+            long start = System.currentTimeMillis();
             ResultScreen.data.clear();
             resultScreen.setSorting(requestType);
             List<String> channelIDsList = new ArrayList<>();
@@ -182,6 +188,9 @@ public class RequestScreen {
                 if (ResultScreen.data.size() > 0) {
                     resultScreen.table.sort();
                     showOutputInterface();
+                    long end = System.currentTimeMillis();
+                    if (setting_executionTime) resultScreen.timer.setText("Executed in: " + (int)(end - start) + "ms");
+                    else resultScreen.timer.setText("");
                 }else alert("Invalid data","No channels found.");
             }else alert("Incomplete input","Please add at least two different channels.");
         });
@@ -270,17 +279,12 @@ public class RequestScreen {
     }
 
     ChannelData getChannelData(String channelId) {
-        System.out.println("\nPASSED FOR EXECUTION: ChannelID: " + channelId);
         // CACHE ON:
         if (setting_useCache) {
-            System.out.println("Use cache option => TRUE.");
-
             // CHANNEL CACHED:
             if (checkIfCached(channelId)) {
-                System.out.println("Channel is cached => TRUE.");
                 List<String> cachedData = getFromCacheChannelData(channelId);
                 ChannelData channelData = createObjectFromCache(cachedData);
-
                 // Adding comments if needed:
                 if (requestType > 3) {
                     // COMMENTS CACHED
@@ -288,40 +292,29 @@ public class RequestScreen {
                     // COMMENTS NOT CACHED
                     else {
                         channelData.setNumberOfComments(getCommentsFromServer(channelId));
-                        System.out.println("Comments retrieved from server.");
                     }
                 }
                 return channelData;
 
             // CHANNEL NOT CACHED:
             } else {
-                System.out.println("Channel is cached => FALSE.");
-                System.out.println("Request sent to server.");
                 Channel channel = getChannelFromServer(channelId);
                 if (channel != null) {
-                    System.out.println("Requested data retrieved from server.");
                     ChannelData channelData = new ChannelData(channel);
                     if (requestType > 3) {
                         channelData.setNumberOfComments(getCommentsFromServer(channelId));
-                        System.out.println("Comments retrieved from server.");
                     }
                     writeCacheToFile(channelData);
-                    System.out.println("Channel data saved to cache.");
                     return channelData;
                 } else alert("Error", "No channel returned.");
             }
-
         // CACHE OFF:
         } else {
-            System.out.println("Use cache option => FALSE.");
-            System.out.println("Request sent to server.");
             Channel channel = getChannelFromServer(channelId);
             if (channel != null) {
-                System.out.println("Requested data retrieved from server.");
                 ChannelData channelData = new ChannelData(channel);
                 if (requestType > 3) {
                     channelData.setNumberOfComments(getCommentsFromServer(channelId));
-                    System.out.println("Comments retrieved from server.");
                 }
                 return channelData;
             }

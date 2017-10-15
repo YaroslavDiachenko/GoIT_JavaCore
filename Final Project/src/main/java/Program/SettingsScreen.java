@@ -79,7 +79,7 @@ public class SettingsScreen {
         option2 = new TitledPane("Cache save path",new VBox(5,option2_Title,option2_CurrentCacheSavePath,option2_ClearCacheButton,option2_NewCacheSavePath,option2_SaveButton));
 
      // execution time
-        Text option3Text = new Text("Show execution time spent? (ne uspel dodelat')");
+        Text option3Text = new Text("Show execution time spent?");
         option3_ToggleGroup = new ToggleGroup();
         option3_ButtonYes = new RadioButton("Yes");
         option3_ButtonYes.setToggleGroup(option3_ToggleGroup);

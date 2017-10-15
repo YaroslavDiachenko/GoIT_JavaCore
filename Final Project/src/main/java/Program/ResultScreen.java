@@ -25,6 +25,8 @@ public class ResultScreen {
     TableColumn column5;
     TableColumn column6;
 
+    Text timer;
+
     public ResultScreen() {
         layout = new VBox();
         layout.setSpacing(10);
@@ -38,15 +40,12 @@ public class ResultScreen {
         table.setItems(data);
         table.getColumns().addAll(column1,column2,column3,column4,column5);
 
-/*
-        table.getSortOrder().clear();
-        table.getSortOrder().add(column4);
-        column3.setSortType(TableColumn.SortType.DESCENDING);
-*/
+        timer = new Text();
+        timer.setOpacity(0.6);
 
         layout.setSpacing(5);
         layout.setPadding(new Insets(10, 0, 0, 10));
-        layout.getChildren().addAll(title,table);
+        layout.getChildren().addAll(title,table,timer);
     }
 
     void setSorting(int requestType) {
