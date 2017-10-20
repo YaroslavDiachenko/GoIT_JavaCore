@@ -27,10 +27,34 @@ package PackageCar;
 
 public class CarDoor {
 
+    static class CarWindow {
+        private boolean windowState;  // true - open, false - closed;
+
+        CarWindow() {
+            this(false);
+        }
+        CarWindow(boolean windowState) {
+            this.windowState = windowState;
+        }
+
+        public boolean getWindowState() {
+            return windowState;
+        }
+        void openWindow() {
+            windowState = true;
+        }
+        void closeWindow() {
+            windowState = false;
+        }
+        void openOrCloseWindow() {
+            windowState = !windowState;
+        }
+    }
+
     // Fields:
 
     private boolean doorState;    // true - open, false - closed;
-    private boolean windowState;  // true - open, false - closed;
+    private CarWindow carWindow;
 
     // Constructors:
 
@@ -39,7 +63,7 @@ public class CarDoor {
     }
     public CarDoor(boolean doorState, boolean windowState) {
         this.doorState = doorState;
-        this.windowState = windowState;
+        this.carWindow = new CarWindow(windowState);
     }
 
     // Getters:
@@ -47,8 +71,8 @@ public class CarDoor {
     public boolean getDoorState() {
         return doorState;
     }
-    public boolean getWindowState() {
-        return windowState;
+    public CarWindow getCarWindow() {
+        return carWindow;
     }
 
     // Methods:
@@ -63,19 +87,10 @@ public class CarDoor {
         doorState = !doorState;
     }
 
-    void openWindow() {
-        windowState = true;
-    }
-    void closeWindow() {
-        windowState = false;
-    }
-    void openOrCloseWindow() {
-        windowState = !windowState;
-    }
 
     void printDoor() {
         System.out.println("\nInformation about the door:");
         System.out.print(doorState ? "  The door is open and " : "  The door is closed and ");
-        System.out.println(windowState ? "window in the door is open." : "window in the door is closed.");
+        System.out.println(carWindow.getWindowState() ? "window in the door is open." : "window in the door is closed.");
     }
 }

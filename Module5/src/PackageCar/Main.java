@@ -107,9 +107,9 @@ public class Main {
                 case 15:
                     inputInt = car.validateDoor();
                     if (inputInt != -1) {
-                        if (car.getDoor(inputInt).getWindowState()) System.out.println("Window is already open.");
+                        if (car.getDoor(inputInt).getCarWindow().getWindowState()) System.out.println("Window is already open.");
                         else {
-                            car.getDoor(inputInt).openWindow();
+                            car.getDoor(inputInt).getCarWindow().openWindow();
                             System.out.println("Window in door #" + inputInt + " was opened.");
                         }
                     }
@@ -117,9 +117,9 @@ public class Main {
                 case 16:
                     inputInt = car.validateDoor();
                     if (inputInt != -1) {
-                        if (!car.getDoor(inputInt).getWindowState()) System.out.println("Window is already closed.");
+                        if (!car.getDoor(inputInt).getCarWindow().getWindowState()) System.out.println("Window is already closed.");
                         else {
-                            car.getDoor(inputInt).closeWindow();
+                            car.getDoor(inputInt).getCarWindow().closeWindow();
                             System.out.println("Window in door #" + inputInt + " was closed.");
                         }
                     }
@@ -127,9 +127,9 @@ public class Main {
                 case 17:
                     inputInt = car.validateDoor();
                     if (inputInt != -1) {
-                        car.getDoor(inputInt).openOrCloseWindow();
+                        car.getDoor(inputInt).getCarWindow().openOrCloseWindow();
                         System.out.print("Window in door #" + inputInt + " was ");
-                        System.out.println(car.getDoor(inputInt).getWindowState() ? "opened." : "closed.");
+                        System.out.println(car.getDoor(inputInt).getCarWindow().getWindowState() ? "opened." : "closed.");
                     }
                     break;
                 case 18:

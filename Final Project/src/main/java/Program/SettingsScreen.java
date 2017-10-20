@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,7 +142,7 @@ public class SettingsScreen {
     void updateHistoryList() {
         historyMap = new HashMap<>();
         File cashDirectoryFile = new File(setting_cacheDirectory);
-        File[] allFiles = cashDirectoryFile.listFiles();
+        File[] allFiles = cashDirectoryFile.listFiles(file -> !file.isHidden());
         if (allFiles != null) {
             for (File file : allFiles) {
                 if (!file.isDirectory()) {
