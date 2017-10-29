@@ -6,18 +6,13 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentsResponse {
-    public List<Comment> items;
+    public String nextPageToken;
+    public List<CommentThread> items;
 
     public void show() {
-        int n = 1;
-        for (Comment i : items) {
-            System.out.println("Comment#" + n++);
-            System.out.println("Can reply: \t\t" + i.snippet.canReply);
-            System.out.println("Author: \t\t" + i.snippet.topLevelComment.snippet.authorDisplayName);
-            System.out.println("Updated at: \t" + i.snippet.topLevelComment.snippet.updatedAt);
-            System.out.println("Likes: \t\t\t" + i.snippet.topLevelComment.snippet.likeCount);
-            System.out.println("Comment: \t\t" + i.snippet.topLevelComment.snippet.textOriginal);
-            System.out.println("-----------------");
+        System.out.println("NextPageToken: "+nextPageToken);
+        for (int i = 0; i < items.size(); i++) {
+            System.out.println("Item#"+i+" CommentId: "+items.get(i).id+" Replies: "+items.get(i).snippet.totalReplyCount);
         }
     }
 }

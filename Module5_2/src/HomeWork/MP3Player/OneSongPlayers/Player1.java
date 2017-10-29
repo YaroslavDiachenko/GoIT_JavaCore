@@ -7,9 +7,4 @@ public class Player1 extends OneSongPlayer {
         super(price);
     }
 
-    @Override
-    public String getPlayerName() {
-        return "Player#1";
-    }
-
 }
