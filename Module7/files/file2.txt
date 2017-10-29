@@ -1,0 +1,1 @@
+{"clients":[{"name": "Bob","fruitType":"Pear","fruitCount":2},{"name":"John","fruitType":"Apple","fruitCount": 1},{"name":"Mike","fruitType":"Banana","fruitCount":1}]}

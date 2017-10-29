@@ -3,21 +3,28 @@ import java.util.Date;
 
 public class Fruit {
 
-    enum Type {Strawberry,Apple,Pear,Banana,Grape,Lemon,Orange,Pineapple,Blackberry,Kiwifruit}
+    enum Type {Peach,Apple,Pear,Banana,Grape,Lemon,Orange,Mango,Cherry,Plum}
 
-    private Type type;
+    private Type fruitType;
     private int shelfLife;
-    private Date date;
+    private Date deliveryDate;
     private double price;
 
-    Type getType() {
-        return type;
+    Fruit(Type fruitType, int shelfLife, Date deliveryDate, double price) {
+        this.fruitType = fruitType;
+        this.shelfLife = shelfLife;
+        this.deliveryDate = deliveryDate;
+        this.price = price;
+    }
+
+    Type getFruitType() {
+        return fruitType;
     }
     int getShelfLife() {
         return shelfLife;
     }
-    Date getDate() {
-        return date;
+    Date getDeliveryDate() {
+        return deliveryDate;
     }
     public double getPrice() {
         return price;
@@ -25,15 +32,9 @@ public class Fruit {
 
     Date getExpiryDate() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        calendar.setTime(deliveryDate);
         calendar.add(Calendar.DATE,shelfLife-1);
         return calendar.getTime();
     }
 
-    Fruit(Type type, int shelfLife, Date date, double price) {
-        this.type = type;
-        this.shelfLife = shelfLife;
-        this.date = date;
-        this.price = price;
-    }
 }

@@ -3,7 +3,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,53 +10,59 @@ import java.util.List;
 
 public class Shop {
 
-    double moneyBalance;
+    double shopMoneyBalance;
+    String name;
     List<Fruit> fruits;
     List<Client> clients;
 
-    public Shop() {
+    public Shop(String name) {
+        this.name = name;
         this.fruits = new ArrayList<>();
     }
 
-    public Shop(List<Fruit> fruits) {
+    public Shop(String name, List<Fruit> fruits) {
+        this.name = name;
         this.fruits = fruits;
-        this.moneyBalance = 0;
+        this.shopMoneyBalance = 0;
     }
 
-    void addFruits(String path) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(path));
+    void addFruits(String path){
         try {
+            BufferedReader reader = new BufferedReader(new FileReader(path));
             Gson gson = new Gson();
             String json = reader.readLine();
             Shop temp = gson.fromJson(json, new TypeToken<Shop>(){}.getType());
+            System.out.println("\nNEW DELIVERY:\n");
+
             this.fruits.addAll(temp.fruits);
         } catch (Exception e) {
             System.err.println("Error");
         }
     }
 
-    void load(String path) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(path));
+    void load(String path){
         try {
+            BufferedReader reader = new BufferedReader(new FileReader(path));
             Gson gson = new Gson();
             String json = reader.readLine();
             Shop temp = gson.fromJson(json, new TypeToken<Shop>(){}.getType());
+            this.fruits = null;
             this.fruits = temp.fruits;
-            this.moneyBalance = temp.moneyBalance;
+            this.shopMoneyBalance = temp.shopMoneyBalance;
         } catch (Exception e) {
             System.err.println("Error");
         }
     }
 
-    void save(String path) throws IOException {
+    void save(String path){
         try {
             Gson gson = new Gson();
             FileWriter writer = new FileWriter(path);
             gson.toJson(this, writer);
             writer.flush();
             writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error");
         }
     }
 
@@ -79,7 +84,7 @@ public class Shop {
     List<Fruit> getAddedFruits(Date date) {
         List<Fruit> fruits = new ArrayList<>();
         for (Fruit e : this.fruits) {
-            if (e.getDate().equals(date)) fruits.add(e);
+            if (e.getDeliveryDate().equals(date)) fruits.add(e);
         }
         return fruits;
     }
@@ -87,7 +92,7 @@ public class Shop {
     List<Fruit> getSpoiledFruits(Date date, Fruit.Type type) {
         List<Fruit> fruits = new ArrayList<>();
         for (Fruit e : this.fruits) {
-            if (e.getType().equals(type) && e.getExpiryDate().before(date)) fruits.add(e);
+            if (e.getFruitType().equals(type) && e.getExpiryDate().before(date)) fruits.add(e);
         }
         return fruits;
     }
@@ -95,44 +100,60 @@ public class Shop {
         Date today = new Date();
         List<Fruit> fruits = new ArrayList<>();
         for (Fruit e : this.fruits) {
-            if (e.getType().equals(type) && !e.getExpiryDate().before(date)) fruits.add(e);
+            if (e.getFruitType().equals(type) && !e.getExpiryDate().before(date)) fruits.add(e);
         }
         return fruits;
     }
     List<Fruit> getAddedFruits(Date date, Fruit.Type type) {
         List<Fruit> fruits = new ArrayList<>();
         for (Fruit e : this.fruits) {
-            if (e.getType().equals(type) && e.getDate().equals(date)) fruits.add(e);
+            if (e.getFruitType().equals(type) && e.getDeliveryDate().equals(date)) fruits.add(e);
         }
         return fruits;
     }
 
-    void sell(String path, Date date) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(path));
+    void sell(String path, Date date) {
         try {
+            BufferedReader reader = new BufferedReader(new FileReader(path));
             Gson gson = new Gson();
             String json = reader.readLine();
             Shop temp = gson.fromJson(json, new TypeToken<Shop>(){}.getType());
-
-            for (Client e : temp.clients) {
-                System.out.print("Client: " + e.name + "; Product type: " + e.type + "; Quantity: " + e.count);
-                List<Fruit> list = getAvailableFruits(date, e.type);
-                if (list.size() > 0 && e.count <= list.size()) {
-                    for (int i = 0, j = 0; j < e.count; i++) {
-                        Fruit fruit  = fruits.get(i);
-                        if (fruit.getType().equals(e.type)) {
-                            moneyBalance += fruit.getPrice();
-                            fruits.remove(i);
-                            i--;
-                            j++;
+            if (temp.clients != null && temp.clients.size() > 0) {
+                System.out.println("\nSELL REQUEST:");
+                for (Client e : temp.clients) {
+                    boolean sellStatus = false;
+                    List<Fruit> availableFruits = getAvailableFruits(date, e.fruitType);
+                    if (availableFruits.size() > 0 && e.fruitCount <= availableFruits.size()) {
+                        for (int i = 0, j = 0; j < e.fruitCount; i++) {
+                            Fruit fruit  = fruits.get(i);
+                            if (fruit.getFruitType().equals(e.fruitType)) {
+                                shopMoneyBalance += fruit.getPrice();
+                                fruits.remove(i);
+                                i--;
+                                j++;
+                                sellStatus = true;
+                            }
                         }
                     }
-                    System.out.println("; Status: Sold.");
-                }else System.out.println("; Status: Not sold.");
+                    System.out.println(e.fruitCount + " " + e.fruitType.toString()
+                            + (e.fruitCount > 1 ? "s were" : " was")
+                            + (sellStatus ? " sold" : " not sold") + " to " + e.name + ";");
+                }
             }
-            System.out.println();
+
         } catch (Exception e) {
             System.err.println("Error");
+        }
+    }
+
+    void show() {
+        System.out.println("\n\t"+ name  +":\n\tMoney balance:\t" + shopMoneyBalance + "\n\tProducts:");
+        showFruits(fruits);
+    }
+
+    void showFruits(List<Fruit> fruits) {
+        for (Fruit i : fruits) {
+            System.out.println("\t\t" + i.getFruitType() + "\t" + i.getShelfLife() + "\t" + Main.setDatePrintable(i.getDeliveryDate()) + "\t" + i.getPrice());
         }
     }
 

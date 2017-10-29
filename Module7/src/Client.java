@@ -1,12 +1,11 @@
 public class Client {
-
     String name;
-    Fruit.Type type;
-    int count;
+    Fruit.Type fruitType;
+    int fruitCount;
 
-    public Client(String name, Fruit.Type type, int count) {
+    public Client(String name, Fruit.Type type, int fruitCount) {
         this.name = name;
-        this.type = type;
-        this.count = count;
+        this.fruitType = type;
+        this.fruitCount = fruitCount;
     }
 }
