@@ -19,7 +19,6 @@ public class Geometry3 extends Geometry2 {
 
     void addOptimalThreadsButton() {
         Button button3 = new Button("Optimal Threads");
-        System.out.println(checkBox.isSelected());
         buttons.getChildren().addAll(button3,checkBox);
 
         button3.setOnMouseClicked(event -> {
