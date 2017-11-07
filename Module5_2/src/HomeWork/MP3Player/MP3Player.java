@@ -32,7 +32,7 @@ public abstract class MP3Player {
 
     public MP3Player(double price) {
         this.price = price;
-        this.directory = new File("sounds/");
+        this.directory = new File("media/");
         this.playlist = new ArrayList<>();
         this.mediaView = new MediaView();
         this.playerLayout = new VBox(10);
