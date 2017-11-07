@@ -11,6 +11,8 @@ public class Main {
     private static int peopleCount;
     private static int maxCount;
     private static int counter;
+    private static final Semaphore SEMAPHORE_LIBRARY = new Semaphore(maxCount);
+    private static final Semaphore SEMAPHORE_DOOR = new Semaphore(1);
 
     static {
         try {
@@ -21,9 +23,6 @@ public class Main {
         } catch (IOException e) {
         }
     }
-
-    private static final Semaphore SEMAPHORE_LIBRARY = new Semaphore(maxCount);
-    private static final Semaphore SEMAPHORE_DOOR = new Semaphore(1);
 
     public static void main(String[] args) throws IOException {
         for (int i = 1; i <= peopleCount; i++) {
