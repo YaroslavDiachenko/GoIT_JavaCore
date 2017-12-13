@@ -1,9 +1,10 @@
-package Practice.entities;
+package Entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Snippet {
-    public int totalReplyCount;
+public class CommentThread {
+    public String id;
+    public Snippet snippet;
 }

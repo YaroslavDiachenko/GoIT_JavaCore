@@ -10,7 +10,7 @@ public class FlowerStore {
         Flower[] bouquet = new Flower[roses + camomiles + tulips];
         for (int i = 0; i < roses; i++) {
             bouquet[i] = new Rose();
-            wallet += Rose.price;
+            wallet += Rose.getPrice();
         }
         for (int i = roses; i < bouquet.length - tulips; i++) {
             bouquet[i] = new Camomile();
@@ -18,7 +18,7 @@ public class FlowerStore {
         }
         for (int i = roses + camomiles; i < bouquet.length; i++) {
             bouquet[i] = new Tulip();
-            wallet += Tulip.price;
+            wallet += Tulip.getPrice();
         }
         return bouquet;
     }
@@ -28,7 +28,7 @@ public class FlowerStore {
         while(roses+camomiles+tulips > 0) {
             if(roses > 0) {
                 bouquet.add(new Rose());
-                wallet += Rose.price;
+                wallet += Rose.getPrice();
                 roses--;
             }
             if(camomiles > 0) {
@@ -38,7 +38,7 @@ public class FlowerStore {
             }
             if(tulips > 0) {
                 bouquet.add(new Tulip());
-                wallet += Tulip.price;
+                wallet += Tulip.getPrice();
                 tulips--;
             }
         }

@@ -1,5 +1,5 @@
 package HomeWork;
 
 
-public class Flower {
+public abstract class Flower {
 }

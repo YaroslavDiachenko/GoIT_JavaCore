@@ -2,5 +2,17 @@ package HomeWork;
 
 
 public class Rose extends Flower {
-    static int price = 100;
+    private static int price;
+
+    public Rose() {
+        price = 100;
+    }
+
+    public static int getPrice() {
+        return price;
+    }
+
+    public static void setPrice(int price) {
+        Rose.price = price;
+    }
 }

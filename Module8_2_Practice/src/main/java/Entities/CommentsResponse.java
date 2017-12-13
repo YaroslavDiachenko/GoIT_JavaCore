@@ -1,4 +1,4 @@
-package Practice.entities;
+package Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

@@ -1,10 +1,9 @@
-package Practice.entities;
+package Entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommentThread {
-    public String id;
+public class TopLevelComment {
     public Snippet snippet;
 }
