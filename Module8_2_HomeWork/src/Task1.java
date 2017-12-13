@@ -1,4 +1,3 @@
-package HomeWork;
 
 
 import java.io.IOException;

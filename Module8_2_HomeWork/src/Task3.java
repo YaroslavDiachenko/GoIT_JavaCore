@@ -1,4 +1,3 @@
-package HomeWork;
 
 
 import javafx.application.Application;
@@ -40,7 +39,7 @@ public class Task3 extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
-        String filePath = "/Users/test/IdeaProjects/GoIT_JavaCore/Module8_2/files/cars.txt";
+        String filePath = "files/cars.txt";
         getLinksFromFile(filePath);
         generateImages();
 
