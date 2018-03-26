@@ -1,6 +1,11 @@
 package HomeWork;
 
 
+import HomeWork.Entities.Camomile;
+import HomeWork.Entities.Flower;
+import HomeWork.Entities.Rose;
+import HomeWork.Entities.Tulip;
+
 import java.util.ArrayList;
 
 public class FlowerStore {
@@ -10,15 +15,15 @@ public class FlowerStore {
         Flower[] bouquet = new Flower[roses + camomiles + tulips];
         for (int i = 0; i < roses; i++) {
             bouquet[i] = new Rose();
-            wallet += Rose.getPrice();
+            wallet += bouquet[i].getPrice();
         }
         for (int i = roses; i < bouquet.length - tulips; i++) {
             bouquet[i] = new Camomile();
-            wallet += Camomile.price;
+            wallet += bouquet[i].getPrice();
         }
         for (int i = roses + camomiles; i < bouquet.length; i++) {
             bouquet[i] = new Tulip();
-            wallet += Tulip.getPrice();
+            wallet += bouquet[i].getPrice();
         }
         return bouquet;
     }
@@ -27,18 +32,21 @@ public class FlowerStore {
         ArrayList<Flower> bouquet = new ArrayList<>();
         while(roses+camomiles+tulips > 0) {
             if(roses > 0) {
-                bouquet.add(new Rose());
-                wallet += Rose.getPrice();
+                Rose rose = new Rose();
+                bouquet.add(rose);
+                wallet += rose.getPrice();
                 roses--;
             }
             if(camomiles > 0) {
-                bouquet.add(new Camomile());
-                wallet += Camomile.price;
+                Camomile camomile = new Camomile();
+                bouquet.add(camomile);
+                wallet += camomile.getPrice();
                 camomiles--;
             }
             if(tulips > 0) {
-                bouquet.add(new Tulip());
-                wallet += Tulip.getPrice();
+                Tulip tulip = new Tulip();
+                bouquet.add(tulip);
+                wallet += tulip.getPrice();
                 tulips--;
             }
         }
@@ -53,10 +61,5 @@ public class FlowerStore {
                 else System.out.print(bouquet[i].getClass().getSimpleName() + ", ");
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Rose rose = new Rose();
-        System.out.println(rose.getClass());
     }
 }

@@ -1,11 +1,13 @@
-package HomeWork;
+package HomeWork.Util;
 
+
+import HomeWork.Entities.Flower;
 
 import java.io.FileWriter;
 
 public abstract class FlowersSaver {
 
-    static void save(String fileName, Flower[] bouquet) {
+    public static void save(String fileName, Flower[] bouquet) {
         try {
             FileWriter writer = new FileWriter(fileName);
             for (int i = 0; i < bouquet.length; i++) {

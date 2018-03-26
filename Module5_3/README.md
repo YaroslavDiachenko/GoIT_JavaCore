@@ -1,5 +1,3 @@
-[![N|Solid](http://otrude.net/company_img/78d6e3a3e0b075b420128c52b3c07b3d.jpg)](http://otrude.net/company_img/78d6e3a3e0b075b420128c52b3c07b3d.jpg)
-
 ## Задание 1
 Создать базовый класс для цветов. От него наследуется 3 класса-цветка:
 - роза
